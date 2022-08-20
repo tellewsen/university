@@ -1,0 +1,430 @@
+\documentclass[12pt,norsk,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[norsk]{babel}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{multicol}
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{subfig} 
+\usepackage[a4paper]{geometry}
+
+\title{Prosjektoppgave FYS2130}
+\author{Kandidatnummer: 10}
+
+\date{}
+
+\begin{document}
+\maketitle
+Jeg har samarbeidet med kandidatnummer 68 gjennom hele arbeidet. Med mindre han/hun har kjørt noen av programmene på nytt for å endre på noe i løpet av helgen er alle figurer og programmer identiske med mine. Selve rapporten er kun skrevet av meg.
+\tableofcontents
+
+%Part 1
+\section{Del 1}
+\subsection{Beskrivelse}
+Den første delen av prosjektet går ut på å lage og teste en del programmer vi får bruk for senere. \\
+Det er hovedsakelig tre programmer som skal lages:
+\begin{description}
+\item[HvitStoyGauss] Dette programmet genererer en gausisk frekvens fordeling rundt et senter vi velger med en bredde vi også velger. Vi må også definerer hvor mange punkter denne lages for og hvor stor samplings frekvensen skal være. Vi kjører så en invers fourier transformasjon på disse frekvensene og får ut et singal. 
+\item[WL1] Genererer en wavelet analyse mellom to frekvenser vi velger med K-parameter K. 
+Dette programmet er en delvis redigert kopi fra kapittel 13 i læreboka.
+\item[AutoCorr] Beregner korrelasjonen mellom signalet på to forskjellige tidspunkter og plotter dette. Legger også på en linje for der korrelasjonen har falt til halvparten av startpunktet.\\
+\end{description}
+Alle disse programmene ligger vedlagt.
+Når disse programmene er laget skal vi så teste de for noen gitte parametre og studere resultatene.\\
+\\
+Vi velger å bruke følgende parametre:\\
+Fullverdibredde for frekvensfordeling i signalet  på 50 Hz med en senterfrekvens på 100, 1000 og 10000 Hz.
+Setter K-verdien til 48 i Wavelet analysen, og justerer frekvensområdet etter senterfrekvensen for hvert tilfelle.\\
+\\
+For signalene forventer vi å få et signal som helt enkelt og greit består av støy. Denne støyen bør variere mer etterhvert som vi øker senterfrekvensen for signalet. \\
+
+\subsection{Signalene}
+%Plot av signalene
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[Vi ser at vi har fått et signal med støy.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Signal1a_fsenter100}} 
+\subfloat[Ser her at signalet varierer raskere.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Signal1a_fsenter1000}}
+\\ 
+\noindent 
+\subfloat[Ser her at signalet varierer enda raskere.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Signal1a_fsenter10000}}
+\end{center}
+\caption[caption]{Signalet med forskjellige senterfrekvenser.} 
+\end{figure}
+
+Vi får ut signaler som vi forventet å få. Programmet vårt har altså fungert som det skal.
+
+
+\subsection{Frekvens spekterne}
+%Plot av fourier spekter
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[En topp på 100 Hz og en topp på ca 44kHz.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Fourier1a_fsenter100}} 
+\subfloat[En topp på 1kHz og en topp litt under 44kHz.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Fourier1a_fsenter1000}}
+\\ 
+\noindent 
+\subfloat[En topp på 10kHz og en litt under 35kHz]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Fourier1a_fsenter10000}}
+\end{center}
+\caption[caption]{Frekvensspekter for hvert av signalene.}\
+\end{figure}
+
+Vi ser at frekvensene er der det skal være, men at vi har fått med en topp på en frekvens mye høyere enn den vi satt som senter!\\
+Dette skyldes måten Fourier transformasjon fungerer på, og er faktisk som forventet. Vi minner om at vi satt samplingsfrekvensen til å være 44100Hz, og at det da er ganske åpenbart at samlingsfrekvens minus senterfrekvens gir oss plasseringen til den første ekstratoppen. Regnestykket kan gjentas for å se sammenhengen for de to andre, om ønskelig.
+
+
+\subsection{Waveletdiagrammene}
+%Plot av waveletanalysen
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[Støy med varierende amplitude.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet1a_fsenter100}} 
+\subfloat[Enda klarere.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet1a_fsenter1000}}
+\\ 
+\noindent 
+\subfloat[Her får vi områder med nesten ingenting også!]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet1a_fsenter10000}}
+\end{center}
+\caption[caption]{Waveletdiagrammer for hvert av signalene.} 
+\end{figure}
+
+I det første diagrammet ser ikke ting så veldig spennende ut. Vi ser at frekvenser rundt senterfrekvensen er aktive som forventet og at amplituden varierer.\\
+I det andre diagrammet gjentar dette seg rundt senterfrekvensen for dette signalet. Vi ser også at det begynner å komme frem områder der signalet nesten forsvinner i noen øyeblikk.\\
+I det tredje diagrammet kommer det klart frem at signalet forsvinner og kommer tilbake igjen. Det kan virke som at signalet interferer konstruktivt og destruktivt med seg selv over tid.
+
+\subsection{Autokorrelasjon}
+%Plot av autokorrelasjon
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[Autokorrelasjon mefd fsenter = 100.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{AutoCorr1a_fsenter100}} 
+\subfloat[Autokorrelasjon mefd fsenter = 1000]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{AutoCorr1a_fsenter1000}}
+\\ 
+\noindent 
+\subfloat[Autokorrelasjon mefd fsenter = 10000]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{AutoCorr1a_fsenter10000}}
+\end{center}
+\caption[caption]{Autokorrelasjon for hver av signalene.}
+\end{figure}
+\newpage
+\noindent
+Avlesing av autokorrelasjon gir oss følgende målinger:\\
+
+\begin{tabular}{| l | c | r |}
+ \hline
+  signal & fsenter & koherenstid\\
+ \hline
+  1 & 100    	& 8.00 ms\\
+  2 & 1000   	& 8.75 ms\\
+  3 & 10000  	& 7.80 ms\\
+ \hline
+\end{tabular}\\
+\\
+Vi observerer at koherenstiden forblir omtrent den samme selv om vi endrer senterfrekvensen. Dette kan virke logisk hvis vi tenker på at selv om senterfrekvensen endrer seg så varierer signalet kun et lite område i frekvens rundt senterfrekvensen. Det er ikke da så merkelig at det å flytte rundt på signalet i spekteret ikke forandrer koherendstiden. \\Så koherenstiden er altså uavhengig av senterfrekvensen for signalet, men hva med fullverdibredden? Hvis vi endrer på \emph{den} må vel koherenstiden bli påvirket?
+
+\subsection{Beskrivelse}
+Vi skal nå sette senterfrekvensen fast på 10 kHz, og se hva som skjer med fullverdibredd på 0.5, 10, 100, 1000 og 5000 Hz. Dette er helt enkelt og greit. Vi setter inn parameterne i programmene vi allerede har laget og får ut resultatene på de neste sidene. jeg har valgt å ikke ta med resultatene for 5000Hz siden de ikke gir oss noen ny informasjon og dermed bare fyller opp sidene.
+
+\subsection{Signalene}
+%Plot av signalene
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[Liten variasjon]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Signal1b_fsigma0_5}} 
+\subfloat[Litt mer]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Signal1b_fsigma10}}
+\\ 
+\noindent 
+\subfloat[Bedre]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Signal1b_fsigma100}}
+\subfloat[Enda bedre]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Signal1b_fsigma1000}}
+\end{center}
+\caption[caption]{Signalet med forskjellige fullverdibredde.} 
+\end{figure}
+
+Vi ser at jo bredere vi sette fullverdibredden, jo større variasjon i signalet får vi. Dette er egentlig ganske åpenbart siden vi ved å øke bredden gir signalet flere frekvenser å jobbe med, og dermed kan signalet variere på flere måter.
+
+\subsection{Frekvens spekterne}
+%Plot av fourier
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[Skarpe pigger .]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Fourier1b_fsigma0_5}} 
+\subfloat[Fortsatt skarpe]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Fourier1b_fsigma10}}
+\\ 
+\noindent 
+\subfloat[Litt bredere]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Fourier1b_fsigma100}}
+\subfloat[Bredere]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Fourier1b_fsigma1000}}
+\end{center}
+\caption[caption]{Frekvensspekter for hvert av signalene.} 
+\end{figure}
+
+Vi ser at frekvensene oppfører som vi har satt de til å gjøre. Vi har to topper, akkurat som før, og de er der de skal være. Vi ser også at når vi endrer fullverdibredden, så blir faktisk piggene dratt utover også, akkurat som de skal. 
+
+\subsection{Waveletdiagrammene}
+%Plot av wavelet
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[fsenter = 0.5.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet1b_fsigma0_5}} 
+\subfloat[fsenter = 10]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet1b_fsigma10}}
+\\ 
+\noindent 
+\subfloat[fsenter = 100]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet1b_fsigma100}}
+\subfloat[fsenter = 1000]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet1b_fsigma1000}}
+\end{center}
+\caption[caption]{Waveletdiagrammer for hvert av signalene.} 
+\end{figure}
+
+Vi ser at waveletdiagrammene har signaler sentrert rundt riktig frekvens. Vi ser også at fullverdibredden bestemmer bredden i frekvensspekteret som den skal. Vi ser også at ved å øke bredden så øker variasjonen i signalet også.\\
+I det første diagrammet ser vi liten variasjon. Vi har gitt signalet en liten bredde å jobbe med her, så dette er som forventet.\\
+I det andre diagrammet ser vi et nydelig eksempel på at signalet interfererer med seg selv. Vi får sterke områder og striper der signalet slukker seg selv.\\
+I det tredje diagrammet ser vi fortsatt en antydning til fenomenet, men variasjonen i signalet begynner å bli så stor at det er vanskelig å se det.\\
+I det fjerde diagrammer har variasjonen tatt helt over, og vi kan ikke se noe til at vi får hverken sterke eller svake områder.
+
+\subsection{Autokorrelasjon}
+%Plot av Autokorrelasjon
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[Liten variasjon.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{AutoCorr1b_fsigma0_5}} 
+\subfloat[Litt mer.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{AutoCorr1b_fsigma10}}
+\\ 
+\noindent 
+\subfloat[Enda mer]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{AutoCorr1b_fsigma100}}
+\subfloat[Stor variasjon]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{AutoCorr1b_fsigma1000}}
+\end{center}
+\caption[caption]{Autokorrelasjon for hver av signalene.} 
+\end{figure}
+
+Avlesing av autokorrelasjon gir oss følgende målinger:\\
+\\
+\begin{tabular}{| l | c | r |}
+ \hline
+  signal & fsigma 	& koherenstid\\
+ \hline
+  1 		& 0.5    	& ikke nådd\\
+  2 		& 10   		& 0.05   s\\
+  3 		& 100  		& 3.70 ms\\
+  4 		& 1000  	& 0.35 ms\\
+ \hline
+\end{tabular}\\
+
+Vi ser at det er en klar sammenheng mellom koherenstid og fullverdibredde.\\
+Vi så i waveletdiagrammet for det første signalet at det var liten endring i signalet over tid og det første diagrammet her bekrefter dette. Det er faktisk så liten endring at koherenstiden ikke blir nådd!\\
+I det andre diagrammet ser vi at vi når koherenstiden etter kort tid, og det to neste diagrammene viser at tiden blir kortere for høyere fullverdibredde.\\
+En rask titt på resultatene i skjemaet kan tyde på at en tidobling i fullverdibredde gir oss en koherenstid på en tidel av det vi hadde.
+
+\subsection{Konklusjon}
+Jeg har valgt å sette koherenstiden lik halvparten av maksimum. På dette tidspunktet i oppgaven var dette bare et tilfeldig valg jeg gjorde. Vi kommer imidlertid i neste del til å se på krysskorrelasjon, og jeg ville ha samme linje for koherenstid i autokorrelasjon som i krysskorrelasjon. Det at jeg ville ha samme linje, gjorde at når jeg så på resultatene i neste oppgave, ikke ville gå lavere enn halvparten av maksimum, siden resultatet vi fikk for en verdi nær grensen, begynte å bli såpass dårlig at jeg ikke var komfortabel med å sette den ned på 1/e av maksimum. Jeg vil heller gå glipp av noen verdier enn å ta med verdier som ikke gir god korrelasjon når jeg tror at de gjør det fordi de er over linjen.
+
+Vi har i del 1 sett at koherenstid er avhengig av fullverdibredden på signalet vi analyserer.\\
+Vi har sett at vi ved liten fullverdibredde får liten variasjon i signalet, og at stor bredde gir stor variasjon.\\
+Vi så også at vi ved å velge en mellomting kan få signalet til å interferere med seg selv, og at det på noen tidspunkter kan interferere nok til at det nesten blir borte.
+
+%DEL 2
+\section{Del 2}
+
+
+\subsection{Beskrivelse}
+Vi skal først generere to ulike signaler, k1 og k2,  ved hjelp av programmet vi laget i del 1.
+Disse signalene skal ha senterfrekvens  10kHz og fullverdibredd 1kHz.
+Vi skal så simulerer at vi har to detektorer som tar i mot disse signalene. 
+For detektor A skal signalene komme frem på samme tidspunkt.
+For detektor B skal signalet fra kilde 1 komme frem likt som på A, men signalet fra kilde 2 skal komme frem en tid senere. 
+Vi modellerer dette ved å bruke et signal på et senere tidspunkt fra kilde 2, når vi summer signalene, når de kommer frem til B.
+Vi skal så plotte krysskorrelasjon som funksjon av forflyttningen
+
+Først starter vi med å lage programmene vi trenger:
+\begin{description}
+\item[LowPass] Dette programmet kjører en fourier transformasjon av et signal. Man setter så et maksimum for frekvensen. Programmet beregner så hvor midten av spekteret er og fjerner alt fra midten ned til maksimumet vi satt og opp til midten + maksimumet. Det blir så gjort en invers fourier transformasjon og vi får ut signalet igjen.
+\item[CrossCorr] Dette programmet sjekker hvor like to signaler er på et tidspunkt. Ligner veldig på autokorrelasjon.
+\end{description}
+
+
+\subsection{Plot av krysskorrelasjonen mellom A og B}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{CrossCorr2a_CCvsDn}\\
+\caption{Vi ser har at det er noen topper med god korrelasjon}
+\end{figure}
+
+Det at vi ser på plottet at krysskorrelasjonen er god ved noen tidspunkter gjør at det er fristende å prøve å flytte mottaker B. 
+Vi testet først med å sette plasseringen til A og B like, og vi fikk da like signaler på begge to. Dette plottet er ikke tatt med siden det er liten vits med to like plot i en rapport.
+Vi velger å flytte den tre forskjellige avstander. 
+To av disse er de toppene vi så. 
+Den siste er en dårlig en for å se om vi merker noen forskjell. 
+Hvis vi så studerer waveletdiagrammene for hvert tilfelle bør vi se omtrent det samme signalet for de to gode avstandene og noe helt annerledes for den dårlige.
+
+\subsection{Waveletdiagrammene}
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[Signalet mottatt hos detektor A.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet2a_f}} 
+\subfloat[Signalet mottatt hos detektor B, dn = 4.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet2a_g_dn4}}
+\\ 
+\noindent 
+\subfloat[Signalet mottatt hos detektor B, dn = 9.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet2a_g_dn9}}
+\subfloat[Signalet mottatt hos detektor B, dn = 82.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet2a_g_dn82}}
+\end{center}
+\caption[caption]{Waveletdiagrammer for hvert av signalene.} 
+\end{figure}
+
+Hvis vi nå ser på det første signalet og merker oss plasseringen til noen røde områder og så ser etter de samme områdene på de neste diagrammene vil vi se noe interessant.
+Vi ser at når vi flytter B at diagrammene ser ganske like ut for dn = 4 og 9. 
+Når vi så flytter B den dårlige forflytningen, får vi noe helt annerledes.
+Forventningene våre blir altså bekreftet.
+
+
+
+\subsection{Beskrivelse}
+Vi får så beskjed om å gjøre akkurat det samme en gang til, men denne gangen skal vi kjøre signalene gjennom et lavpassfilter som kun slipper gjennom signaler under 1kHz. Vi minner om at signalet vi nå starter med har senterfrekvens 10kHz og fullverdibredde 5kHz. Det er altså et veldig svakt signal vi nå jobber med videre. 
+\
+Når vi gjør det, og så plotter krysskorrelasjonen, får vi ut følgende plot.
+
+\subsection{Krysskorrelasjon}
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{CrossCorr2b_CCvsDn}\\
+\caption{Plot av krysskorrelasjonen mellom A og B}
+\end{figure}
+
+Vi observerer her det samme som tidligere.
+Velger samme forflytninger denne gangen siden vi ser at toppene befinner seg på samme sted.
+Velger en ny dårlig forflytning tilfeldig et sted vi ser på plottet at er dårlig. Forventer å få ut noe som ligner på det vi hadde uten lavpass filter.
+
+\subsection{Waveletdiagrammene}
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[Signalet mottatt hos detektor A.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet2b_f}} 
+\subfloat[Signalet mottatt hos detektor B, dn = 4.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet2b_g_dn4}}
+\\ 
+\noindent 
+\subfloat[Signalet mottatt hos detektor B, dn = 9.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet2b_g_dn9}}
+\subfloat[Signalet mottatt hos detektor B, dn = 26.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{Wavelet2b_g_dn26}}
+\end{center}
+\caption[caption]{Waveletdiagrammer for hvert av signalene.} 
+\end{figure}
+
+\subsection{Konklusjon}
+
+Her fikk vi oss en liten overaskelse. Istedenfor å få kaotisk støy, som vi kunne se at lignet på hverandre til en viss grad, får vi nå ut et signal som er helt klart likt for de gode forflytningene, og helt annerledes for den dårlige!\
+Hvis vi studerer hvert av plottene ser vi også at de er fulle av noe jeg bare kan kalle huller. Det virker som det er en hel haug med små hull i signalene der frekvenser blir borte. Siden det er forskjellig størrelse på disse, så antar jeg at dette ikke er en numerisk feil i matlab, men at det faktisk er slik. Om dette betyr noe eller ikke vet jeg ikke noe om.\
+Det kan også nevnes at det er en antydning til striper der signalet interfererer med seg selv destruktivt her også, som tidligere.
+
+\section{Del 3}
+\subsection{Beskrivelse}
+
+Her skal vi gjøre akkurat det samme som i del 2, men vi skal øke antallet kilder til 11! Vi velger å beregne intensiteten for innsignalene, og bruker lavpass filter på de mottatte signalene. Vi beregner så krysskorrelasjon for signalene. Vi skal gjøre dette for tre forskjellige avstander mellom kilder og detektorer. 
+Vi velger å bruke avstandene h = 100, 200 og 400 m, og s = 10m. I tillegg skal vi for hver av disse avstandene endre avstanden mellom detektor A og B. Vi velger å sjekke avstandene mellom 0 og 5 m. \\
+For å få gjort dette må vi lage et program som regner ut avstandene mellom A,B og alle de 11 kildene. I tillegg må vi beregne forskyvningen for alle signalene inn til B.
+For å beregne avstandene laget vi programmet ved navn Avstander. Programmet ligger vedlagt.\\
+For å forstå oppsettet legger vi ved en kopi av figuren gitt i oppgaveteksten til prosjektet.
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.25\textwidth, height=0.25\textwidth]{kilder}
+\caption[caption]{Tegning av oppsettet} 
+\end{center}
+\end{figure}
+
+\subsection{Krysskorrelasjon}
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[Krysskorrelasjon med h = 100.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{CrossCorr3_CCvsDn_h100}} 
+\subfloat[Krysskorrelasjon med h = 200.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{CrossCorr3_CCvsDn_h200}}
+\\ 
+\noindent 
+\subfloat[Krysskorrelasjon med h = 400.]{\includegraphics[width=0.5\textwidth, height=0.5\textwidth]{CrossCorr3_CCvsDn_h400}}
+\end{center}
+\caption[caption]{Signalet med forskjellige senterfrekvenser} 
+\end{figure}
+
+\subsection{Konklusjon}
+Vi ser her at vi har et helt annet resultat enn for bare to kilder.
+Nå får vi en slags trapp med god korrelasjon på korte avstander! 
+Vi kan altså flytte rundt på detektor B, og så lenge vi holder oss innenfor en viss avstand får vi god korrelasjon! 
+Vi observerer også at denne avstanden øker hvis vi øker avstanden fra kildene. Dette gir mening med tanke på at vi i grensetilfellet, at denne avstanden blir stor, ikke bør kunne skille kildene fra hverandre. Det kan virke som at en dobling av avstanden gir dobbelt så stor koherenstid, men jeg ville gjort flere målinger før jeg sa noe sikkert angående dette.\\
+Vi får så beskjed om at vi skal beregne størrelsen $ \eta = \frac{\theta a}{\lambda}$ for hvert av tilfellene med a der koherensen har sunket til halvparten av maks.\\
+Avlesning av plottene gir oss følgende:\\
+\begin{center}
+\begin{tabular}{| l | l |}
+ \hline
+  h			& a\\
+ \hline
+  100		&  0.2m\\
+  200		&  0.4m\\
+  400		&  0.8m\\
+ \hline
+\end{tabular}\\
+\end{center}
+Dette viser oss at det er en klar sammenheng mellom avstanden h og avstanden vi kan flytte mottakerne fra hverandre. Dette bekrefter det vi allerede har funnet, altså at jo lenger unna kildene er jo vanskeligere blir det å skille signalene fra hverandre, og at tolleransen i avstand mellom A og B da øker.\\
+Vi antar at vi kan si at $\lambda = v/f$, der $v$ er lydhastigheten i luft og $f$ er senterfrekvensen for signalene. Litt geometri forteller oss at $\theta = 2arctan(s/2h)$
+\begin{center}
+\begin{tabular}{| l | l | l | l | l |}
+ \hline
+  h			& a 		& $\theta$		& $\lambda$	&	$\eta$	\\
+ \hline
+  100		& 0.2    	& 0.1			&0.05m			& 0.4\\
+  200		& 0.4  		& 0.05			&0.05m			& 0.4 \\
+  400		& 0.8  		& 0.025		&0.05m			& 0.4\\
+ \hline
+\end{tabular}\\
+\end{center}
+Vi får så beskjed om å vise at størrelsen $\eta$ har et lignende opphav som $dsin(\theta) = \lambda$.
+I vårt tilfelle har vi at $d = a$ slik at vi skal vise at $asin(\theta) = \lambda$ har en sammenheng med $\lambda\eta = a\theta$.
+Vi vet at for små $\theta$ så er $sin(\theta)=\theta$ slik at $asin(\theta)=a\theta$. Problemet med denne fremgangsmetoden er at jeg ender opp med $$\frac{a\theta}{\lambda} = 1$$
+Dette hadde vært helt greit hvis jeg hadde kommet frem til at $\eta = 1$, men det har jeg jo ikke så jeg kommer egentlig ingen vei med dette.\\
+Vi så i plottet av krysskorrelasjon for forskjellige lengder h, at for små endringer a, var korrelasjonen like god.
+Den er ikke nødvendigvis perfekt, siden jeg har normalisert funksjonen min. På ett eller annet vis må dette bety at for å endre korrelasjonen mellom de må vi flytte B mer enn en viss avstand. Vi ser også at avstanden h har en betydning for dette. Det virker logisk at det er en sammenheng mellom denne minimumsavstanden, avstanden h og bølgelengden til bølgen. Hva denne sammenhengen er vet jeg ikke sikkert.\\
+Dette tyder på at den romlige koherensen også bør være god for avstander opp til denne minimumsvstanden.
+
+\section{Del 4}
+\subsection{Sirius}
+Grafen får omtrent samme form som vår. Og hvis vi justerer i forhold til avstander og intensitet ser det ut som at modellen vår passer bra til deres resultater.
+\subsection{Silvas Powerpoint}
+Kort forklart handler kontroversen om at eksperimentet tilsynelatende viser at bølgeteorien til lys er bedre enn partikkelteorien.
+Det blir lagt vekt på at det ikke var noen kontrovers ang. radiobølger, men med en gang det var snakk om synlig lys begynte folk å tvile på at interferometeret deres ville virke. Det var også veldig rart for mange at bølgeteorien skulle fungerer på dette fenomenet som ble sett på som et partikkelproblem.
+
+\newpage
+\section{Del 5}
+\subsection{HBT effekten}
+I denne prosjektoppgaven har vi modellert HBT effekten med bølger. Vi har laget en enkel numerisk modell. Vi startet med å generere et signal med støy. 
+Dette signalet ble så sendt ut fra en kilde et stykke unna. 
+Signalet ble så mottatt av to detektorer. 
+Vi har så analysert signalet på mange forskjellige måter.
+Vi fant underveis at koherenstiden til signalet var uavhengig av senterfrekvensen, men at det var avhengig av fullverdibredden til signalet. 
+Vi fant også at det gikk ann å flytte detektor B noen spesifikke avstander, og fortsatt få god korrelasjon med A.
+Når vi så sendte signalet gjennom et lavpass filter fikk vi se at dette stemte og at vi hadde en stor del ''klumper'' som var fristende å tolke som ''lydpakker''.
+Vi fant så at hvis vi økte antall kilder, slik at signalet ligner mer på et signal fra den virkelige verden, fikk vi en krysskorrelasjonsfunksjon som holdt seg på samme nivå over små avstander.
+Vi fant også at hvis vi økte avstanden til kildene, kunne vi øke avstanden mellom detektorene våre uten å påvirke korrelasjonen mellom det mottatte signalet i detektorene. 
+
+Det virker utifra det vi har gjort som at hvis vi overfører dette til elektromagnetiske bølger, bør kunne oppdage disse "klumpene" i signalet vi mottar, og at det da blir fristende å kalle disse ''lyspakkene'' for fotoner. 
+
+Hver av observasjonene som nevnes i denne delen er forklart bedre i tidligere deler.\\
+
+Avslutningsvis kan det nevnes at Del 4 og 5 ikke har fått like mye oppmerksomhet som de burde. Jeg kan egentlig ikke skylde på noe annet enn at jeg har prioritert den delen av oppgaven som omhandler programmering og tolking av resultatene. 
+
+\section{Programmer}
+\subsection{Del1-1}
+\verbatiminput{D:/SoBproject/programmer/Del1a.m}
+\subsection{Del1-2}
+\verbatiminput{D:/SoBproject/programmer/Del1b.m}
+\subsection{Del2-1}
+\verbatiminput{D:/SoBproject/programmer/Del2a.m}
+\subsection{Del2-2}
+\verbatiminput{D:/SoBproject/programmer/Del2b.m}
+\subsection{Del3}
+\verbatiminput{D:/SoBproject/programmer/Del3.m}
+\subsection{AutoCorr}
+\verbatiminput{D:/SoBproject/programmer/AutoCorr.m}
+\subsection{Avstander}
+\verbatiminput{D:/SoBproject/programmer/Avstander.m}
+\subsection{CrossCorr}
+\verbatiminput{D:/SoBproject/programmer/CrossCorr.m}
+\subsection{HvitStoyGauss}
+\verbatiminput{D:/SoBproject/programmer/HvitStoyGauss.m}
+\subsection{LowPass}
+\verbatiminput{D:/SoBproject/programmer/LowPass.m}
+\subsection{WL1}
+\verbatiminput{D:/SoBproject/programmer/WL1.m}
+
+
+\end{document}

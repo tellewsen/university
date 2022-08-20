@@ -1,0 +1,78 @@
+% !TeX spellcheck = en_US
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{datetime}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\pagestyle{fancy}
+
+% Title Page
+\title{FYS4150 Project 1}
+\author{Andreas Ellewsen}
+
+\fancyhead[L]{Andreas Ellewsen}
+%\fancyhead[C]{Solving Poisson equation numerically}
+\fancyhead[R]{Spring 2015}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+\begin{multicols}{2}
+\section{Introduction}
+In this project we use various vector and matrix operations to solve the one dimensional Poisson equation
+\[
+-u''(x) = f(x).
+\]
+Since we want to solve this numerically the second derivative $u$ is approximated with
+\[
+   -\frac{v_{i+1}+v_{i-1}-2v_i}{h^2} = f_i  \hspace{0.5cm} \mathrm{for} \hspace{0.1cm} i=1,\dots, n,
+\]
+where $f_i=f(x_i)$.
+This is done using 3 different approaches. First a specialized Gaussian elimination, secondly a generalized Gaussian elimination, and finally LU decomposition. All three approaches are programmed in c++, and plotted using python.
+The vector and matrix operations are imported from the Armadillo library for c++, and plotting of the solution is done using matplotlib in python.
+
+To test our method we use a source function $f(x) = 100e^{-10x}$, and keep the same interval and boundary 
+conditions. The above differential equation then has a closed-form  solution given by $u(x) = 1-(1-e^{-10})x-e^{-10x}$.
+
+This is use to calculate the relative error for a number of different steplengths.
+\section{Rewriting as Matrix equation}
+To solve this using linear algebra we first need to rewrite our equation as a matrix equation. To see how this can be done we write out a few of the first equations of the discretized approximation:
+\[
+   -\frac{-2v_{0}       + v_{1}}{h^2} = f_0  \hspace{0.5cm} \mathrm{for} \hspace{0.1cm} i=1,\dots, n,
+\]
+\[
+   -\frac{  v_{0}-2v_{1}+ v_{2}}{h^2} = f_1  \hspace{0.5cm} \mathrm{for} \hspace{0.1cm} i=1,\dots, n,
+\]
+\[
+   -\frac{  v_{1}-2v_{2}+ v_{3}}{h^2} = f_2  \hspace{0.5cm} \mathrm{for} \hspace{0.1cm} i=1,\dots, n,
+\]
+At this point the pattern should be clear.
+\begin{equation}
+    {\bf A} = \left(\begin{array}{cccccc}
+                           2& -1& 0 &\dots   & \dots &0 \\
+                           -1 & 2 & -1 &0 &\dots &\dots \\
+                           0&-1 &2 & -1 & 0 & \dots \\
+                           & \dots   & \dots &\dots   &\dots & \dots \\
+                           0&\dots   &  &-1 &2& -1 \\
+                           0&\dots    &  & 0  &-1 & 2 \\
+                      \end{array} \right)
+\end{equation}
+
+\subsection{sub1}
+\section{part 3}
+\subsection{sub1}
+\section{part 4}
+\subsection{sub1}
+\subsection{sub2}
+\subsection{sub3}
+\end{multicols}
+\end{document}

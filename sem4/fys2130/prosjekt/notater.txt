@@ -1,0 +1,56 @@
+Forside med navn osv
+
+Kort forklaring av DEL1
+
+-Plot av signalene med info om hvilke parametre som lager de forskjellige
+-Beskrivelse av likheter og forskjeller mellom singalene.
+-Plot av fourier for hver av de
+-Plot av wavelet for hver av de
+-Beskrivelse av det vi ser. (summasjon av bølger med lik amplitude fører til at resultatet varierer i amplitude over tid?.........! )
+-Forklaring av hvorfor vi ser det vi ser.
+-Plot av autokorrelasjons funksjoner for hver av de
+
+Del1a:
+	signal 1(fsenter 100) 	- Koherenstid 1.6  ms
+	signal 2(fsenter 1000) 	- Koherenstid 8.75 ms
+	signal 3(fsenter 10000) - Koherenstid 7.8  ms
+
+Del1b:
+	signal 1(fsigma 0.5) 	- Koherenstid ikke nådd
+	signal 2(fsigma 10) 	- Koherenstid 0.46 s
+	signal 3(fsigma 100) 	- Koherenstid 3.7  ms
+	signal 4(fsigma 1000) 	- Koherenstid 0.35 ms
+	signal 5(fsigma 5000) 	- Koherenstid 0.05  ms
+
+Kommenter koherenstidens forhold til parameterne for generering av signalene.
+Snakk litt om at vi velger å ha koherenstid ved 1/2 maximum til korellasjonsfunksjonen.
+Hvorfor velger vi 1/2 av max istedenfor 1/e av max?
+
+Kort forklaring DEL 2
+
+-Plot av krysskorrelasjon for dn mellom 0 og 2000
+-Studere waveletdiagrammene for dn = 0,4,9,13,82 og kommentere at vi har like diagrammer for f og g når dn = 0 og når krysskorrelasjonen er høy, og at vi har ulike diagrammer når krysskorrelasjonen er liten(dn=82). 
+Dette skyldes åpenbart at vi for dn =/= 0 får forskjellige mottatte signaler fra f og g. 
+Dette betyr også at hvis vi forskyver dn slik at krysskorrelasjonen er høy bør vi få samme signal.
+
+-Omtrentlig det samme som forige, men med LowPass i bruk.
+
+-Plot av autocorr for forskjellige dn.
+-Begrunner valgene våre av dn i wavelet plottene.
+-Plot av wavelet for signal med Fmax(Lowpass) mye lavere enn fsenter(Hvitstoy).
+
+Kommenter hva vi ser. Ser det samme som i første del uten lowpass filter.
+
+Kort forklaring DEL 3
+
+-Program med 11 kilder.
+-Beregner intensiteten for innsignalene og bruker lavpass filter på de.
+-Beregner krysskorrelasjon for signalene
+-plot av krysskorrelasjon for forskjellige verdier (h=100,200,400)
+-Beregner størrelsen eta = theta*a/lambda og ser at den er omtrent det samme for hvert av de tre tilfellene.
+-Viser at størrelsen eta har et lignende opphav som d*sin(theta) = lambda
+-Forklaring av hvordan romlig koherens blir påvirket av små endringer i a.
+
+Kort forklaring DEL 4
+-Velger å se på oppgaven om Sirius
+

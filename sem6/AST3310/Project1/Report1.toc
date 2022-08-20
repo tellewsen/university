@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}Project}{2}
+\contentsline {section}{\numberline {2}Assumptions}{2}
+\contentsline {section}{\numberline {3}Calculations}{2}
+\contentsline {section}{\numberline {4}The computer program}{5}
+\contentsline {subsection}{\numberline {4.1}Problems}{5}
+\contentsline {subsection}{\numberline {4.2}Changing the resolution($dm$)}{5}
+\contentsline {subsection}{\numberline {4.3}Changing $\rho _0$, $P_0$ and $T_0$ while keeping all other variables constant}{6}
+\contentsline {subsection}{\numberline {4.4}Getting R to go to zero, by changing $\rho _0$,$P_0$ and $T_0 $}{10}
+\contentsline {subsection}{\numberline {4.5}Getting L,R and M to approach zero at the same time}{12}
+\contentsline {section}{\numberline {5}Appendix}{13}
+\contentsline {subsection}{\numberline {5.1}The python code}{13}

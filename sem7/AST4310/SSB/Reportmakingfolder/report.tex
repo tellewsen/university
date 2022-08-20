@@ -1,0 +1,704 @@
+%% file: template.tex = LaTeX template for article-like report 
+%% init: sometime 1993
+%% last: Feb  8 2015  Rob Rutten  Deil
+%% site: http://www.staff.science.uu.nl/~rutte101/rrweb/rjr-edu/manuals/student-report/
+
+%% First read ``latex-bibtex-simple-manual.txt'' at
+%% http://www.staff.science.uu.nl/~rutte101/Report_recipe.html
+
+%% Start your report production by copying this file into your XXXX.tex.
+%% Small changes to the header part will make it an A&A or ApJ manuscript.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{aa}   %% Astronomy & Astrophysics style class
+
+\usepackage{graphicx,natbib,url,twoopt}
+\usepackage[varg]{txfonts}           %% A&A font choice
+\usepackage{hyperref}                %% for pdflatex
+%%\usepackage[breaklinks]{hyperref}  %% for latex+dvips
+%%\usepackage{breakurl}              %% for latex+dvips
+\usepackage{pdfcomment}              %% for popup acronym meanings
+\usepackage{acronym}                 %% for popup acronym meanings
+
+\hypersetup{
+  colorlinks=true,   %% links colored instead of frames
+  urlcolor=blue,     %% external hyperlinks
+  linkcolor=red,     %% internal latex links (eg Fig)
+}
+
+\bibpunct{(}{)}{;}{a}{}{,}    %% natbib cite format used by A&A and ApJ
+
+\pagestyle{plain}   %% undo the fancy A&A pagestyle 
+
+%% Add commands to add a note or link to a reference
+\makeatletter
+\newcommand{\bibnote}[2]{\@namedef{#1note}{#2}}
+\newcommand{\biblink}[2]{\@namedef{#1link}{#2}}
+\makeatother
+
+%% Commands to make citations ADS clickers and to add such also to refs
+%% May 2014: they give error stops ("Illegal parameter number ..."}
+%%   for plain latex with TeX Live 2013; the ad-hoc fixes added below let
+%%   latex continue instead of stop within these commands.
+%%   Please let me know if you know a better fix!
+%%   No such problem when using pdflatex.
+\makeatletter
+ \newcommandtwoopt{\citeads}[3][][]{%
+   \nonstopmode%              %% fix to not stop at error message in latex
+   \href{http://adsabs.harvard.edu/abs/#3}%
+        {\def\hyper@linkstart##1##2{}%
+         \let\hyper@linkend\@empty\citealp[#1][#2]{#3}}%   %% Rutten, 2000
+   \biblink{#3}{\href{http://adsabs.harvard.edu/abs/#3}{ADS}}%
+   \errorstopmode}            %% fix to resume stopping at error messages 
+ \newcommandtwoopt{\citepads}[3][][]{%
+   \nonstopmode%              %% fix to not stop at error message in latex
+   \href{http://adsabs.harvard.edu/abs/#3}%
+        {\def\hyper@linkstart##1##2{}%
+         \let\hyper@linkend\@empty\citep[#1][#2]{#3}}%     %% (Rutten 2000)
+   \biblink{#3}{\href{http://adsabs.harvard.edu/abs/#3}{ADS}}%
+   \errorstopmode}            %% fix to resume stopping at error messages
+ \newcommandtwoopt{\citetads}[3][][]{%
+   \nonstopmode%              %% fix to not stop at error message in latex
+   \href{http://adsabs.harvard.edu/abs/#3}%
+        {\def\hyper@linkstart##1##2{}%
+         \let\hyper@linkend\@empty\citet[#1][#2]{#3}}%     %% Rutten (2000)
+   \biblink{#3}{\href{http://adsabs.harvard.edu/abs/#3}{ADS}}%
+   \errorstopmode}            %% fix to resume stopping at error messages 
+ \newcommandtwoopt{\citeyearads}[3][][]{%
+   \nonstopmode%              %% fix to not stop at error message in latex
+   \href{http://adsabs.harvard.edu/abs/#3}%
+        {\def\hyper@linkstart##1##2{}%
+         \let\hyper@linkend\@empty\citeyear[#1][#2]{#3}}%  %% 2000
+   \biblink{#3}{\href{http://adsabs.harvard.edu/abs/#3}{ADS}}%
+   \errorstopmode}            %% fix to resume stopping at error messages 
+\makeatother
+
+%% Acronyms
+\newacro{ADS}{Astrophysics Data System}
+\newacro{NLTE}{non-local thermodynamic equilibrium}
+\newacro{NASA}{National Aeronautics and Space Administration}
+
+%% Add popups with meaning to acronyms 
+%% NB: only show up in Adobe Reader and do not work with \input or \include
+\gdef\acp#1{%
+  \pdfmarkupcomment[markup=Underline,color={1 1 1},author={{#1}},opacity=0]%
+  {{#1}}{{\acl{#1}}}}
+
+%% Spectral species
+\def\MgI{\ion{Mg}{I}}          %% A&A; for aastex use \def\MgI{\ion{Mg}{1}} 
+\def\MgII{\ion{Mg}{II}}        %% A&A; for aastex use \def\MgII{\ion{Mg}{2}} 
+
+%% Hyphenation
+\hyphenation{Schrij-ver}       %% Dutch ij is a single character
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}  
+
+%% simple header.  Change into A&A or ApJ commands for those journals
+
+\twocolumn[{%
+\vspace*{4ex}
+\begin{center}
+  {\Large \bf Stellar Spectra B. LTE Line Formation}\\[4ex]       
+  {\large \bf Andreas Ellewsen}\\[4ex]
+  %{\large \bf Andreas Ellewsen$^{1}$}\\[4ex]
+  %\begin{minipage}[t]{15cm}
+  %      $^1$ Institute of theoretical astrophysics\\
+
+%  {\bf Abstract.} We learned how to write nice reports \ldots 
+
+  %\vspace*{2ex}
+  %\end{minipage}
+\end{center}
+}] 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Stratification of the solar atmosphere}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In this exercise we study the radial stratification of the solar atmosphere by using the FALC model by Fontela et al. (1993)
+
+\subsection{FALC temperature stratification}
+The first thing to do is import the data from the model files, and take a look at how temperature varies with height.
+This can be seen in figure \ref{falctemp}.
+ \begin{figure}
+  \includegraphics[width=.49\textwidth]{falctemp.png}
+  \caption{Plot of temperature against column height.}
+  \label{falctemp} 
+ \end{figure}
+
+
+\subsection{FALC density stratification}
+I start by plotting the total pressure $p_{total}$ against column mass $m$. See figures \ref{falc_pressure} and \ref{falc_pressure_log}.
+We see that they scale linearly. From this we can conclude that we can write 
+\begin{equation}
+ p_{total} = Cm
+\end{equation}
+where if one finds $C$ for all pressures and column masses and then find the average $C$, I get $C = g_{surface} = 27398.2$ cm/s$^2$.
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{falc_pressure.png}
+ \caption{Plot of total pressure against column mass.}
+ \label{falc_pressure} 
+\end{figure}
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{falc_pressure_log.png}
+ \caption{Plot of total pressure against column mass using logarithmic scale.}
+ \label{falc_pressure_log} 
+\end{figure}
+
+Fontena et al. (1993) assumed complete mixing, so we check that this condition holds by plotting the ratio of the hydrogen mass density to the total mass density against height. Next we add the Helium as well and calculate the contribution of helium and hydrogen to the total. From the figure it seems that nearly all of the density is contributed from hydrogen and helium. However if one does the calculation one finds that the average fraction of the remaining elements (the ``metals'') contributes $0.002$ ($0.02 \%$) of the total. This can be seen in figure \ref{Hdensratio_height}.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{Hdensratio_height.png}
+ \caption{Ratio of hydrogen mass density to total mass density vs height.}
+ \label{Hdensratio_height} 
+\end{figure}
+Next we plot the column mass against height. See figure \ref{colm_height}. Note that the curve becomes nearly straight if we make the y-axis logarithmic in figure \ref{colm_height_log}. This would indicate that the change in column mass is close to constant. Note however that it is not completely straight indicating some deviation from this. This can be attributed to the column mass being dependent on pressure, and pressure being dependent on temperature which we saw earlier was very complicated.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{col_height.png}
+ \caption{Column mass vs height.}
+ \label{colm_height} 
+\end{figure}
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{col_height_log.png}
+ \caption{Column mass vs height with logarithmic y-axis.}
+ \label{colm_height_log} 
+\end{figure}
+
+The next quantity to look at is gas density. Gas density is plotted against height in figure \ref{gdens_height}.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{gdens_height.png}
+ \caption{Gas density against height with the point where $\rho = \rho_0/e$ marked with a line.}
+ \label{gdens_height} 
+\end{figure}
+We want to know the pressure scale height $H_\rho$ in  
+\begin{equation}
+ \rho \approx \rho(0)exp(-h/H_{\rho})
+\end{equation}
+
+This can be found from the definition
+\begin{equation}
+ H_\rho = \frac{kT}{M g}
+\end{equation}
+where $k$ is Boltzmann's constant, T is temperature in K, M is the mean molecular weight, and g is surface gravity.
+If one assumes that most of the molecules in the photosphere is hydrogen we can set $M=m_H$. Inserting the values for the deep photosphere ($h = -100$) then gives a scale height of $H_\rho = 196.3$ km. This is not realistic. Assuming that the photosphere only contains helium gives a scale height $H_\rho = 49.3 km$. The real number is somewhere between these two, but since we don't know the mean molecular weight this method doesn't really work in this case.
+
+Another way to do this is to just mark the point where the density has fallen to $1/e$ of its original value. In figure \ref{gdens_height} this is marked with a line. The point the two lines cross gives $H_\rho \approx 150 $km.
+
+The next step is to compute the gas pressure and plot it against height. We also over-plot the product $(n_H + n_e)kT$. See figure \ref{gas_height}. There is some difference between the curves. Plotting the ratio between the curves shows this clearly (figure \ref{gas_height_ratio}). Note however that the sun does not only contain hydrogen. Because of this we must include the hydrogen number density in the ideal gas law. By doing this we obtain figure \ref{gas_height_hel} which shows a curve that seems to be overlapping perfectly. Plotting the ratio between the two curves shows that it deviates only slightly at the fourth decimal place. See figure \ref{gas_height_ratio_hel}. From this we can conclude that the ideal gas law is a very good approximation.
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{gas_height.png}
+ \caption{Gas pressure against height.}
+ \label{gas_height} 
+\end{figure}
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{gas_height_ratio.png}
+ \caption{Ratio between gas pressure and ideal gas law.}
+ \label{gas_height_ratio} 
+\end{figure}
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{gas_height_hel.png}
+ \caption{Gas pressure against height with helium included in curve for ideal gas law.}
+ \label{gas_height_hel} 
+\end{figure}
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{gas_height_ratio_hel.png}
+ \caption{Ratio between gas pressure and ideal gas law when including helium.}
+ \label{gas_height_ratio_hel} 
+\end{figure}
+
+With that done we want to look at the total hydrogen density. We should also include the electron density, proton density, and the density of the electrons that do not result from hydrogen ionization. The electron density, proton density and electron density can be read out of the FALC model. To find the density of the electrons not from ionized hydrogen we need to assume that all of the protons come from ionized hydrogen. This would indicate that $n_H - n_p$ equals the number of neutral hydrogen atoms. And since each neutral hydrogen has one electron this would be the number of electrons still bound to hydrogen, e.g those not from ionized hydrogen. The density of these should then be
+\begin{equation}
+ n_{be} = (n_H - n_p).
+\end{equation}
+This is plotted against height in figure \ref{densities_height}. 
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{densities_height.png}
+ \caption{Figure shows densities for a number of quantities against height.}
+ \label{densities_height} 
+\end{figure}
+
+From the graph we see that the number density of protons is a little above 0 for very low heights. This indicates that the hydrogen gets ionized at this height. As the height increases this goes to zero indicating that the hydrogen remains neutral when height increases. Because of this it is only logical that the electron density goes to zero as well, and that the density of the electrons not from ionized hydrogen approaches the density of the hydrogen (since nearly all of the hydrogen is neutral hydrogen). Figure \ref{densities_height_log} shows the same with a logarithmic
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{densities_height_log.png}
+ \caption{Figure shows densities for a number of quantities against height with logarithmic y-axis.}
+ \label{densities_height_log} 
+\end{figure}
+
+As the height increases the number density of everything approaches zero, which makes sense since we are looking at the atmosphere of the sun. At some point we should approach vacuum which has almost zero density.
+
+With that done we plot the ionization fraction of hydrogen against height. 
+The ionization fraction of hydrogen fraction is simply
+\begin{equation}
+ n_{HII} = \frac{n_p}{n_H}
+\end{equation}
+
+See figure \ref{hyd_ion}. Note the logarithmic scale.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{hyd_ion.png}
+ \caption{Figure shows the ionization fraction of hydrogen depending on height in kilometers.}
+ \label{hyd_ion} 
+\end{figure}
+There is a clear resemblance to the temperature plot (see figure \ref{falctemp}) which makes sense considering that increasing the temperature should ionize more of the hydrogen at that height.
+
+The next thing one should do is compare the photon density to the particle density.
+If one assumes thermodynamic equilibrium the photon density $N_{phot}$ in photons per cm$^3$ is given by
+\begin{equation}
+ N_{phot} \approx 20T^3.
+\end{equation}
+Note however that this only holds if the medium is in thermodynamic equilibrium, and that means that the medium needs to be dominated by collisions. This means that we need a much lower photon density than hydrogen density.
+Calculating this value for the deep photosphere ($h = -100$) gives a photon density $N_{phot} = 1.66\times10^{13}$ cm$^{-3}$. In comparison the hydrogen density at the same location is $N_H = 1.35\times10^{17}$ cm$^{-3}$. So TE holds, and we can use the equation.
+Unfortunately we can not assume thermodynamic equilibrium higher up in the atmosphere. The equation for the photon density there instead becomes
+\begin{equation}
+ N_{phot} = 20T_{eff}^3/2\pi
+\end{equation}
+where $T_{eff} = 5770$K is the effective solar temperature.
+Calculating this for the highest point in our data gives $N_{phot} = 6.11\times 10^{11}$ cm$^{-3}$. The density of hydrogen a
+t the same point is $N_H = 5.58\times 10^9$. At this height there are more photons than hydrogen atoms. Note that the hydrogen density dropped by 8 orders of magnitude, while the photon density dropped only 2.
+Since the hydrogen density is lower than the photon density by 2 orders of magnitude the medium is dominated by radiation instead of collisions. This makes the medium almost transparent to radiation.
+
+\subsection{Comparison with the earth's atmosphere}
+There have been done similar measurements of the earths atmosphere. The values used in this report are from Allen 1976. 
+The first thing to do is to make plots of everything in the table. See figures \ref{temp_earth}, \ref{pressure_earth}, \ref{particle_dens_earth}, and \ref{gas_dens_earth}.
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{temp_earth.png}
+ \caption{Plot of the temperature as a function of height above the surface on earth.}
+ \label{temp_earth} 
+\end{figure}
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{pressure_earth.png}
+ \caption{The figures shows the pressure as function of height on earth.}
+ \label{pressure_earth} 
+\end{figure}
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{particle_dens_earth.png}
+ \caption{Particle density against height.}
+ \label{particle_dens_earth} 
+\end{figure}
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{gas_dens_earth.png}
+ \caption{Plot of the gas density as a function of height on earth.}
+ \label{gas_dens_earth} 
+\end{figure}
+
+Taking a closer look at pressure and density reveals that if one normalizes each to their respective maximums and then plot them together we get a graph that is very close to identical (Figure \ref{pressure_density_compare}). This indicates that all of these quantities are dependent on the same quantity. 
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{pressure_density_compare.png}
+ \caption{Logarithmic plot of normalized density and pressure vs height.}
+ \label{pressure_density_compare} 
+\end{figure}
+Next we plot the mean molecular weight $\mu_E \equiv \overline{m}/m_H$ against height. See figure \ref{mu_E}. We see that it decreases at higher altitudes. This indicated that the atoms crowd in the lower atmosphere while the lighter ones lie higher up.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{mu_E.png}
+ \caption{Mean molecular weight versus height on earth.}
+ \label{mu_E} 
+\end{figure}
+
+We should also se what the density scale height is in the lower atmosphere. Like for the sun we can do this two different ways. Either by using the equation for the scale height
+\begin{equation}
+ H_\rho = \frac{kT}{Mg}
+\end{equation}
+where everything means the same as before. The difference is that in this case we actually know the mean molecular weight. Inserting values gives $H_\rho = 8.54$ km at the surface of earth. Approximating with the same method as earlier gives $H_\rho \approx 9.5$ km. In this case I would trust the first one more since we know the values we use in the equation to a good precision. Note that the scale height on earth is more than 10 times smaller than on the sun. This is of course caused by the large difference in surface gravity and temperature.
+
+Comparing the rest of the quantities for the sun and earth at the surface shows many differences.
+\begin{table}
+\begin{tabular}{|c|c|c|}
+\hline
+&Sun & Earth\\
+\hline
+$\rho$ &$2.77\times 10^{-7}$g cm$^{-3}$ &$1.23\times 10^{-3}$g cm$^{-3}$\\
+\hline
+N &$1.30\times10^{17}$cm$^{-3}$ &$2.57\times10^{19}$cm$^{-3}$ \\
+\hline
+P &$1.21\times10^{5}$dyn cm$^{-3}$ &$1.02\times10^{6}$dyn cm$^{-3}$ \\
+\hline
+T &$6520$K &$288$K\\
+\hline
+\end{tabular}
+\caption{Table with different values for the earth and the sun}
+\end{table}
+Note especially that the ratio between particle density at the surface of earth to the surface of the sun is almost 200.
+
+If we now calculate the column mass for the surface of earth we find that it is $1044$g cm$^{-2}$. For the sun the column mass on the surface was $4.404$g cm$^{-2}$.
+
+If we now calculate the photon density reaching earth from the sun
+\begin{equation}
+ N_{phot} = \pi \frac{R^2}{D^2}N_{phot}^{top}
+\end{equation}
+where $N_{phot}^{top}$ is the photon density we found earlier at the top of the solar atmosphere, we find that $N_{phot} = 4.16\times10^{7}$cm$^{-3}$ reaching us from the sun.
+While if we calculate the thermal photon density from the earth atmosphere we get $N_{phot}^{earth} = 4.78\times 10^8$cm$^{-3}$. Which means that there are more than 10 times more photons coming from the earth atmosphere on the surface of earth than we receive from the sun. Calculating the ratio of the received photons and the particle density in the air gives a ratio of $1.6\times 10^{-12}$. So the photon density is smaller by 12 orders of magnitude.
+Note however that the photons from our own atmosphere have wavelengths in the infrared part of the spectrum making them invisible to our eyes as well as less energetic.
+\section{Continuous spectrum from the solar atmosphere}
+In this section we want to look at the formation of the solar continuum. We concentrate on the visible and near-infrared parts of the spectrum.
+\subsection{Observed solar continua}
+We will be using the table provided by Allen (1976) for this part. It specifies the continuum radiation emitted by the sun in the wavelength range $\lambda = 0.2 - 5\mu$m. This table specifies four different quantities as a function of wavelength. The quantities are radially emergent intensity and the astrophysical flux in the solar continuum with, and without, smoothed lines.
+Note that even though all of these have the same units, flux is the energy passing through an area per time per frequency or wavelength. The net flow of energy through an area at a given time. The intensity however is the net flow of energy at a specific location in a specific direction per unit time, unit bandwidth and unit solid angle around some direction. In this case the two quantities are very similar but the astrophysical flux is defined as $\pi F_\lambda = \mathcal{F}$ which makes their angle dependence slightly different.
+The four quantities are plotted in figure \ref{distrib}.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{distrib.png}
+ \caption{The four distributions.}
+ \label{distrib} 
+\end{figure}
+
+Next we convert the distributions into values per frequency bandwidth $\Delta \nu = 1$ Hz, and plot them against wavelength. (See figure \ref{distrib_freq}).
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{distrib_freq.png}
+ \caption{The four distributions converted to frequency.}
+ \label{distrib_freq} 
+\end{figure}
+
+We should try to approximate the intensity of the continuum with a planck fit.
+Figure \ref{planckfit} has the planck function with 3 different temperatures in the same plot as the solar continuum intensity. 
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{planckfit.png}
+ \caption{The solar continuum with three attempts to fit a planck function to it.}
+ \label{planckfit} 
+\end{figure}
+The same can also be done for the ones converted to frequency (See figure \ref{planckfit_freq}).
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{planckfit_freq.png}
+ \caption{The solar continuum with three attempts to fit a planck function to it.}
+ \label{planckfit_freq} 
+\end{figure}
+Comparing the two it is clear that something in the range 6200-6400 K is as good as we will get. I will go with 6300 K.
+
+
+Inverting the planck function and inserting the solar continuum produces figure \ref{planck_invert}
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{planck_invert.png}
+ \caption{Brightness temperature of the solar continuum.}
+ \label{planck_invert} 
+\end{figure}
+We see that it peaks at $\lambda \approx 1.6 \mu$m.
+This is in the short-wavelength infrared region of the spectrum. There is also a peak around $0.4 \mu$m. This corresponds to violet in the visual spectrum. So in other words; the light we see receive from the sun should be slightly more violet in color than the others. Whether increasing the brightness temperature from $6100$K to $6500$K results in something we can actually see is another question (Note that this could not be seen while inside the earth atmosphere because scattering changes the spectrum one receives considerably). Nevertheless the peak in the infrared region is even higher than the violet one. That peak is also a wider one which would indicate that more energy is transported through infrared radiation than visible light.
+\subsection{Continuous extinction}
+Now we aim to reproduce figure 5 in the project text. We are provided with a function that evaluates polynomial fits for H$^-$ extinction that are given on page 135 ff of Gray (1992). This function delivers the total H$^-$ extinction in units of cm$^2$ per neutral hydrogen atom. Plotting the values corresponding to the electron density and temperature at the surface of the solar atmosphere results in figure \ref{extinction}. The function works as it should, and we get a nice curve corresponding with Gray's version in the project text.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{extinction.png}
+ \caption{H$^-$ extinction for FALC parameters at surface of solar atmosphere, normalized with the electron pressure $P_e =n_e kT$.}
+ \label{extinction} 
+\end{figure}
+Note that the H$^-$ extinction is not hydrogenic, simply because of its two bound electrons.
+
+It would be interesting to study how the extinction behaves at different heights.
+To do this we use the values from the FALC model, and look at insert values corresponding to every height in the data at $\lambda = 0.5 \mu$m.  Note that the units have changed since the last plot. This is because we are now looking at extinction $\alpha_\lambda(H^-)$ measured per cm path length instead of per H atom. To get this we multiplied the result obtained from the function creating polynomial fits with the number density of neutral hydrogen atoms $n_{neutral H} \approx n_H(h) - n_p(h)$. Note that the y-axis is on a log scale so that one can see the behavior of the function. It would also be useful to include the extinction due to free electrons. The extinction due to free electrons should simply be $\alpha_e = \sigma^T n_e$, where $\sigma^T = 6.648\times 10^{-25}$cm$^2$ is the Thomson cross-section, and $n_e$ is the number density of electrons. 
+The results can be seen in figure \ref{extinc_5000}.
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{extinc_5000.png}
+ \caption{H$^-$ extinction for FALC parameters for $\lambda = 0.5\mu$m in solar atmosphere per centimeter path length.}
+ \label{extinc_5000} 
+\end{figure}
+We see in the figure that extinction from neutral hydrogen dominates for low heights, but as we increase the height the number density of hydrogen decreases, causing a decrease in the extinction from the neutral hydrogen. We also note that the number density of electrons also decreases, but it does not fall as steeply, and when we reach about 850 km it remains constant up until 2200 km. The neutral hydrogen keeps decreasing. This is caused by a combination of hydrogen number density decreasing as well as ionization at higher altitudes. 
+
+\subsection{Optical Depth}
+Knowing the stratification from the FALC model, and the continuous extinction allows us to compute the optical depth given by 
+\begin{equation}
+ \tau_\lambda(h_0) \equiv - \int_\infty^{h_0}\alpha_\lambda^c dh
+\end{equation}
+I use trapezoidal integration to calculate this and compare it to the one tabulated in the FALC data. See figure \ref{optical_depth}.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{optical_depth.png}
+ \caption{Optical depth $\tau_{500}$ from the FALC model compared to the one calculated using polynomial fits.}
+ \label{optical_depth}
+\end{figure}
+The two correspond very well. There is however a gap separating the two which is not unexpected considering how few points we are integrating over.
+\subsection{Emergent intensity and height of formation}
+If one assumes plane-parallel stratification, the emergent intensity from the solar disk can be written
+\begin{equation}
+ I_\lambda = \int_0^\infty S_\lambda e^{-\tau_\lambda}d\tau_\lambda.
+\end{equation}
+We should also inspect the intensity contribution function
+\begin{equation}
+ \frac{dI_\lambda}{dh} = S_\lambda e^{-\tau_\lambda}\alpha_\lambda.
+\end{equation}
+This function gives contribution of each layer at a height h to the emergent intensity. Its weighted mean defines the ``mean height of formation'' and is given by
+\begin{equation}
+ <h> = \frac{\int_0^\infty h(dI_\lambda/dh)dh}{\int_0^\infty(dI_\lambda/dh)dh} = \frac{\int_0^\infty hS_\lambda e^{-\tau_\lambda}d\tau_\lambda}{\int_0^\infty S_\lambda e^{-\tau_\lambda}d\tau_\lambda}
+\end{equation}
+
+We use trapezoidal integration to compute the integral. Obviously we do not have an infinite number of optical depths to integrate over so this will not be an exact solution but it should still give a result very close to the real one.
+
+We choose to look at $\lambda  = 5000 \AA$ ($0.5\mu$m). The computation results in an intensity $4.29\times10^{10}$erg cm$^{-2}$s$^{-1}\mu$m$^{-1}$ster$^{-1}$. The observed intensity at this wavelength is $4.08\times10^{10}$erg cm$^{-2}$s$^{-1}\mu$m$^{-1}$ster$^{-1}$. We see a 4.87$\%$ deviation from the observed intensity, so the computation is good, considering the scales we are operating on.
+
+Next we should plot the peak contribution function and compare it to the mean height of formation.
+See figure \ref{contfunc_5000} for the plot. The peak for the normalized contribution function appears at height -30.0 km, while the mean height for formation is at -3.14 km.
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{contfunc_5000.png}
+ \caption{The contribution function for the intensity at $\lambda= 5000\AA$.}
+ \label{contfunc_5000}
+\end{figure}
+
+Next we should study other wavelengths. At $\lambda = 10000\AA$ we get figure \ref{contfunc_10000}. Here the peak is at -20.0 km, while the mean height of formation is at 24.1 km.
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{contfunc_10000.png}
+ \caption{The contribution function for the intensity at $\lambda= 10000\AA$.}
+ \label{contfunc_10000}
+\end{figure}
+
+Continuing to $\lambda = 16000\AA$ we get the peak at -30.0 km, and the mean height of formation at -17.9 km. See figure \ref{contfunc_16000}
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{contfunc_16000.png}
+ \caption{The contribution function for the intensity at $\lambda= 16000\AA$.}
+ \label{contfunc_16000}
+\end{figure}
+
+At $\lambda = 50000\AA$ we see a significant shift of the peak. The peak shifts to 490.0 km. And the mean height shifts to 499.2 km.
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{contfunc_50000.png}
+ \caption{The contribution function for the intensity at $\lambda= 50000\AA$.}
+ \label{contfunc_50000}
+\end{figure}
+
+The location of the peak shifts for the wavelengths, but its stays around the same height for the 3 first wavelengths. However if we switch to $\lambda = 50000 \AA$ it shoots up by several hundred kilometers. This shows that short wavelength light is formed much lower than high wavelength light.
+
+We should also check the validity of the LTE Eddington-Barbier approximation. This is done by comparing the mean height of formation with the locations where $\tau_\lambda = 1$ and with the locations where $T_b = T(h)$.
+Table \ref{ebtable} shows the values for the different wavelengths. While $h(\tau=1)$ and $<h>$ share some resemblance, $h_T$ is nowhere near any of them. This leads me to conclude that the LTE Eddington-Barbier approximation is not fulfilled in this case.
+\begin{table}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$\lambda$&$h(\tau = 1)$ & $h_T$ &$<h>$ \\
+\hline
+$500$nm& $0.0$km &$10$km & $-3.1$km\\
+\hline
+$1000$nm&$10$km& $1065$km & $24.1$km\\
+\hline
+$1600$nm&$-30$km & $1476$km &$-17.9$km\\
+\hline
+$5000$nm&$490$km & $855$km & $499.2$km\\
+\hline
+\end{tabular}
+\caption{Table shows the height where $\tau_\lambda = 1$, the height where $T_b = T(h)$, and the mean height of formation $<h>$. Note however that we do not have enough precision to find any points where $T_b$ is exactly equal to $T(h)$ so I have chosen to use the heights where the two are closest. Even so the deviations are at most $34$K, and the lowest temperature is $5620$K, which makes this deviation negligible.}
+\label{ebtable}
+\end{table}
+
+\subsection{Disk-center Intensity}
+Repeating the steps from the last section for all wavelengths should give us the complete graph for the intensity of the solar continuum.
+Comparing it with the one we observe produces figure \ref{intensitycompared}. We see that the two graphs coincide well for wavelengths larger than $600$nm. For shorter wavelengths however the computed one is much too large compared to the observed one.
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{intensitycompared.png}
+ \caption{Comparison between observation and computation of the intensity of the solar continuum.}
+ \label{intensitycompared}
+\end{figure}
+
+\subsection{Limb darkening}
+In this section we modify the expression for the intensity such that we now get the intensity that emerged under an angle $\mu =$ cos $\theta$. In plane-parallel approximation it is given by
+\begin{equation}
+ I_\lambda(0,\mu) = \int_0^\infty S_\lambda e^{-\tau_\lambda/\mu}d\tau_\lambda/\mu.
+\end{equation}
+With this we can study the change in intensity over angle by repeating the last section for different angles $\mu$.
+In figure \ref{intensitycompared_angle} this has been done for $\mu = [0,1]$
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{intensitycompared_angle.png}
+ \caption{Comparison of the intensity of the solar continuum depending on angle $\mu$. Note that the intensity is largest for $\mu = 1$, while it is zero for $\mu = 0$.}
+\label{intensitycompared_angle}
+\end{figure}
+From this it becomes clear that that the ratio between the intensity at $\mu = 1$ and other angles changes depending on the wavelength of the radiation. Figure \ref{ratiointensityangle} shows this ratio for a few select wavelengths against angle $\mu$. 
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{ratiointensityangle.png}
+ \caption{Ratio of the intensity at angle $\mu=1$ and other angles for select wavelengths. Note that as $\mu$ decreases the angle increases. Recall $\mu = cos\theta$. This is the reason for the reversed x-axis. We see that for low wavelengths increasing the angle decreases the intensity considerably. This is what is referred to as limb darkening. As one increases the wavelength one reaches a wavelength where the effect goes the other way. Note the increase in intensity for high angles for the $\lambda = 5000$nm graph. This is called limb brightening.}
+\label{ratiointensityangle}
+\end{figure}
+
+Instead of looking at $\mu = cos \theta$ we can look at $r/R_\odot = sin \theta$. Figure \ref{ratiointensityrRsun} plots the same ratio as before against $r/R_\odot$. 
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{ratiointensityrRsun.png}
+ \caption{Here we observe the same effect as before. As the distance from the center of the sun increases, the intensity of low wavelengths is suppressed considerably. Note that the line for $\lambda = 500$nm (visible light) is reduced down to almost $30\%$ at the edge compared to the center. We also see the limb brightening for $\lambda = 5000$nm.}
+\label{ratiointensityrRsun}
+\end{figure}
+The reason why we see a different intensity on the edge compared to the center is because the height at which the optical depth is unity is different. This means that the temperature at the height of optical depth unity is different, which means that he intensity we observe from there is different. In the case of visible light the temperature is lower, causing the observed intensity to be lower near the edge than at the center. For high wavelengths however the temperature at optical depth unity is higher, giving a higher intensity. Now one could ask the question why the optical depth changes for different wavelengths. This is because optical depth is dependent on extinction, and extinction is dependent on wavelength. 
+
+\subsection{Flux integration}
+We can now find the astrophysical flux by integration the emergent intensity over emergence angle.
+This astrophysical flux can then be written
+\begin{equation}
+ F_\lambda = 2\int_0^1 I_\lambda(0,\mu)\mu d\mu
+\end{equation}
+Note however that we are unable to calculate $I_\lambda(0,0)$. We could just skip evaluating this point and integrate using the trapezoidal method as we have done before, but it turns out that this produces a result that is wrong. The reason for this is that the trapezoidal method is a bad one for this function because $I_\lambda(0,\mu)$ is a concave function ill-fitted with straight segments. Instead we use what is called Gaussian quadrature making use of orthogonal polynomials. In this case the best suited one is the Legendre polynomials. The defining formula for this is
+\begin{equation}
+ \int_{-1}^{+1}f(x)dx \approx \sum_{i=1}^n w_i f(x_i)
+\end{equation}
+
+With this approach we get a fairly good approximation which can be seen in figure \ref{solarflux}.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{solarflux.png}
+ \caption{We see that we get a very good match for large wavelengths. There is however an over estimation of the flux for low wavelengths. }
+\label{solarflux}
+\end{figure}
+
+\section{Spectral lines from the solar atmosphere}
+In this section we want to look at the formation of spectral lines in the solar spectrum. We will focus our investigation on the formation of the Na I D$_1$ line at $\lambda = 589.0$ nm. 
+
+\subsection{Observed Na I D line profiles}
+We start by plotting the solar Na I D lines against vacuum wavelength (figure \ref{Na1observed_wavelength}).
+The lines reach their lowest strength at $589.16$nm and $589.76$nm respectively. Note that these are the vacuum wavelengths of the lines, not the air wavelengths we observe on earth. A reasonably accurate transformation is given by
+\begin{equation}
+ \lambda_air = 0.99972683\lambda_{vac} + 0.0107 - 196.25/\lambda_{vac}
+\end{equation}
+Converting to this and plotting a second time yields figure \ref{Na1observed_wavelength_air}
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{Na1observed_wavelength.png}
+ \caption{The solar spectrum in the wavelength range where the two Na I D lines are visible. This is the vacuum wavelength. Here the two lines are shifted compared to what one observes in air.}
+\label{Na1observed_wavelength}
+\end{figure}
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{Na1observed_wavelength_air.png}
+ \caption{The solar spectrum in the wavelength range where the two Na I D lines are visible. Here we see the two lines shifted to their position when observed in air.}
+\label{Na1observed_wavelength_air}
+\end{figure}
+
+\subsection{LTE Line formation}
+We want to compute the solar Na I D$_1$ line. If we assume the FALC model atmosphere together with LTE for the line source function, we can (since LTE hold for the continuum processes) assume that $S_\lambda^l = S_\lambda^c = S_\lambda^{total} = B_\lambda(T)$. To compute these lines we first have to evaluate the line extinction as a function of height and wavelength, and then add that to the extinction in the integration loop from before.
+
+\subsection{Line extinction}
+The monochromatic line extinction per cm path length for a bound-bound transition between a lower level $l$ and an upper level $u$ is given by
+\begin{equation}
+ \alpha_\lambda^l = \frac{\sqrt{\pi}e^2}{m_e c}\frac{\lambda^2}{c}b_l \frac{n_l^{LTE}}{N_E}N_H A_E f_{lu} \frac{H(a,v)}{\Delta\lambda_D}\bigg[1 - \frac{b_u}{b_l}e^{-hc/\lambda kT}\bigg].
+\end{equation}
+This equation holds generally as long as the line broadening for the transition in question is described by the Voigt function, and this is the case for the Na I D lines. Since we assumes LTE we have $b_l = b_u = 1$, and the population fraction $n_l^{LTE}/N_E$ is described by the combined Boltzmann and Saha distributions.
+\begin{equation}
+ U_R \equiv \sum_s g_{r,s} e^{-\chi_{r,s}/kT}
+\end{equation}
+\begin{equation}
+ \frac{n_{r,s}}{N_r} = \frac{g_{r,s}}{U_r}e^{-\chi_{r,s}/kT}
+\end{equation}
+\begin{equation}
+ \frac{N_{r+1}}{N_r} = \frac{1}{N_E}\frac{2U_{r+1}}{U_r}\bigg(\frac{2\pi m_e kT}{h^2}\bigg)^{3/2}e^{-\chi_r/kT}
+\end{equation}
+
+\subsection{Line Broadening}
+As said earlier the Voigt function describes the line broadening well in this case.
+It is defined 
+\begin{equation}
+ H(a,v) = \frac{a}{\pi}\int_{-\infty}^{+\infty}\frac{e^{-y^2}}{(u-v)^2 + a^2}dy
+\end{equation}\label{Voigt}
+\begin{equation}
+ y = \frac{\xi}{c} \frac{\lambda_0} {\Delta \lambda_D}
+\end{equation}
+\begin{equation}
+ v = \frac{\lambda-\lambda_0}{\Delta\lambda_D}
+\end{equation}
+\begin{equation}
+ a = \frac{\lambda^2}{4\pi c}\frac{\gamma}{\Delta\lambda_D}.
+\end{equation}
+Here $\xi$ is the velocity along the line of sight, $a$ the damping parameter, and $\Delta\lambda_D$ the dopplerwidth defined by
+\begin{equation}
+ \Delta\lambda_D \equiv \frac{\lambda_0}{c}\sqrt{\frac{2kT}{m}+v_t^2}.
+\end{equation}
+Note here the extra factor $v_t$ in the dopplerwidth. This is the micro-turbulent velocity factor found in the FALC model.
+
+We will approximate the damping parameter $a$ with Van der Waals broadening, such that the $\gamma$ factor in its definition is defined by
+\begin{equation}
+ \log \gamma_{vdW} \approx 6.33 + 0.4\log(\overline{r_u^2}-\overline{r_l^2}) +\log P_g -0.7\log T,
+\end{equation}
+where $\overline{r^2}$ is the mean square radii of the upper and lower level. We will estimate this from the hydrogenic approximation of Bates and Damgaard (1949)
+\begin{equation}
+ \overline{r^2} =\frac{n^{*2}}{2Z^2}\bigg(5n^{*2} + 1 - 3l(l+1)\bigg).
+\end{equation}
+$\overline{r^2}$ is measured in atomic units, l is the angular quantum number of the level and $n^*$ its effective principle quantum number given by
+\begin{equation}
+ n^{*2]} = R\frac{Z^2}{E_\infty - E_n}.
+\end{equation}
+Here $R = 13.6$eV is the Rydberg constant, Z the ionization stage, and $E_infty - E_n$ is the ionization energy from the level. 
+
+\subsection{Implementation}
+With all of this we should be able to model the extinction of the Na I D lines.
+We start by computing the Boltzmann distribution for Na I. This produces figure \ref{Boltzmann_NaI} which shows that most of the Na I is in the ground state.
+
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{Boltzmann_NaI.png}
+ \caption{The Boltzman distribution of Na I }
+\label{Boltzmann_NaI}
+\end{figure}
+
+Next we calculate the Saha distribution of Na. This produces figure \ref{Saha_Na}, which shows that most of the Na is NaII. There is however some NaI on low heights.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{Saha_Na.png}
+ \caption{}
+\label{Saha_Na}
+\end{figure}
+
+Examining the different terms in the Dopplerwidth shows that the micro-turbulence contributes a good deal on low heights and even more on as the height increases. This can be seen in figure \ref{dopplerterms}
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{dopplerterms.png}
+ \caption{The two terms contributing to the dopplerwidth. Note that the micro-turbulence term contributes a great deal to the width.}
+\label{dopplerterms}
+\end{figure}
+
+Computing the actual dopplerwidth produces figure \ref{Dopplerwidth}.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{Dopplerwidth.png}
+ \caption{Figure shows the dopplerwidth for the NaI D lines in the FALC model. There is a small difference between the two lines, but it is far too small to be seen on this scale. For our purposes they are essentially the same, but calculations will of course be carried out with the respective width for each of the lines.}
+\label{Dopplerwidth}
+\end{figure}
+
+The next term in the extinction to consider is the Voigt function. Calculating it for the NaI D1 line returns figure \ref{voigt_NaID1}.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{voigt_NaID1.png}
+ \caption{The Voigt function for the NaI D1 line. Note that the x-axis has wavelengths around the center of the line. The Voigt function produces the smearing as it is supposed to with its Gaussian core and Lorentzian wings on the edges. Note also that the wings are lower for larger heights. }
+\label{voigt_NaID1}
+\end{figure}
+
+The last term to consider is the correction term
+\begin{equation}
+ \bigg[1-\frac{b_u}{b_l}e^{-hc/\lambda kT}\bigg].
+\end{equation}
+Recall that since we assume LTE $b_u =b_l=1$. A plot of this term can be seen in figure \ref{correction}.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{correction.png}
+ \caption{The correction term at the end of the equation for the extinction. We see that in this case the correction is close to constant and therefore does not contribute much to the overall.}
+\label{correction}
+\end{figure}
+
+With all of that done we can finally calculate the line extinction. The result is figure \ref{extinction_center_D1}. The continuum extinction for the same wavelength is included.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{extinction_center_D1.png}
+ \caption{We see clearly that the extinction at line center decreases as height increases. Note also that the extinction caused by NaI is larger than the one calculated from the continuum.}
+\label{extinction_center_D1}
+\end{figure}
+We should see how this behaves as a function of wavelength as well. We plot this at two heights; $0$km, and $560$km. This behaves as expected. The continuum lies as a line, while the extinction from NaI shows its familiar Doppler core and Lorentzian wings.
+Note however that we are mostly interested in the sum of these, namely the total extinction. All three for both heights can be seen in figure \ref{extinction_D1_height}
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{extinction_D1_height.png}
+ \caption{The lines behave as expected. The continuum lies as a constant. The NaI peaks at line center and dies out on the edges. Together they form an extinction profile that should produce a spectral line.}
+\label{extinction_D1_height}
+\end{figure}
+Repeating the same procedure as we did earlier in this project, we now integrate this extinction to get the optical thickness, and that is then used to integrate once more to get the intensity. This results in figure \ref{intensity_NaID1} where I have included the observed intensity in the same wavelength range.
+\begin{figure}
+ \includegraphics[width=.49\textwidth]{intensity_NaID1.png}
+ \caption{Here we see the computed intensity(solid line), and the observed intensity(dashed line). There are a few key differences between the two. The observed intensity includes a number of other smaller lines. The observed line is deeper than the computed one. And the computed one has an intensity reversal at its center while the observed one does not.}
+\label{intensity_NaID1}
+\end{figure}
+The smaller lines that can be seen in the observed spectrum are due to other elements that are not included in our model of the spectral line. The line being deeper for the observed line than the computed one indicates that we can not assume LTE for the core of this line. The last thing to consider is the line reversal in our computed line. This can be attributed to the fact that the temperature gradient changes from negative to positive at some height in the atmosphere. This means that we get emission instead of absorption for a while, giving rise to this reversal at the center of the line. 
+
+\section{Conclusion}
+In this project we have seen that the solar gas is much more opaque per particle than the air on earth. We then concentrated on the visible and low infrared wavelengths of the solar continuum. And found that this was caused mainly by H$^-$ extinction. This led us to conclude that the large opacity of the solar photosphere was due to a combination of abundant neutral hydrogen atoms, and the presence of free electrons. Since the polarization of the electron-proton combination produces a large cross-section for Coulomb interactions the gas is more opaque. Since the air on earth has no free electrons we do not get this effect and thus the air is much less opaque.
+Next we studied the formation of spectral lines. Here we focused on the formation of the Na I D$_1$ line at $\lambda = 589.0$ nm. We successfully reproduced a line at the same location in the spectrum as the observed line. However our line was not as deep as the observed one, and our line also had a line reversal at its center. This indicated that LTE broke down at the core of this line and to reproduce it better one would have to make use of better techniques permitting deviations from LTE.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% references
+\section{References}
+Rutten, R. J.: 1991, The Generation and Transport of Radiation, Sterrekundig Instituut Utrecht, The Netherlands
+
+%\bibliographystyle{aa-note} %% aa.bst but adding links and notes to references
+%\raggedright              %% only for adsaa with dvips, not for pdflatex
+%\bibliography{XXX}          %% XXX.bib = your Bibtex entries copied from ADS
+
+\end{document}
+
+

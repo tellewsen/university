@@ -1,0 +1,373 @@
+% !TeX spellcheck = en_US
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{datetime}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% Title Page
+\title{AST3310 Project 2}
+\author{Andreas Ellewsen}
+
+\fancyhead[L]{Andreas Ellewsen}
+%\fancyhead[C]{Modeling the solar core}
+\fancyhead[R]{Spring 2015}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+\section{Project}
+The first project involved modeling the core and radiative zone of the sun. 
+Obviously the sun doesn't have just these two parts.
+Because of this fact, this second project involves modeling the convective zone of the sun.
+The convective zone goes from the top of the radiative zone out to the surface.
+This project does not consider what happens on the surface, only the interior.
+
+\section{Assumptions}
+All the assumptions from the first project still apply.
+It is assumed that the radius of a parcel of gas is half of its mixing length. $(r_p = l_m/2)$
+The mixing length is defined to be $\alpha H_P$, where $\alpha$ is a constant between $1/2$ and $2$, and $H_P$ is the pressure scale height.
+It should also be noted that I make the assumption that all energy transport happens in the radial direction from the center of the star. 
+This means that all the gradients in the angular directions are zero at every point.
+\section{Calculations}
+To include convection in the model I need to find equations for the energy transport through the star.
+
+This is done in a series of steps through three exercises found in the lecture notes.
+
+Before we do all of that we can find the temperature gradient needed for pure radiation by using the equation I used in the first project.
+There we found that 
+\begin{equation}
+ \frac{\partial T}{\partial m} = -\frac{3\kappa L}{256\pi^2\sigma r^4 T^3}
+\end{equation}
+since we don't want the gradients with regards to mass anymore, I calculate the following:
+\begin{equation*}
+\begin{aligned}
+ m = \frac{4\pi r^3}{3}\rho\\
+ \frac{\partial m}{\partial r} = 4\rho \pi r^2 
+\end{aligned}
+\end{equation*}
+The gradients are defined such that
+\begin{equation}
+ \nabla = -\frac{H_P}{T}\frac{\partial T}{\partial r}
+\end{equation}
+and thus we can insert all of this and find
+\begin{equation*}
+\begin{aligned}
+ \nabla_{rad} &= -\frac{H_P}{T}\frac{\partial T}{\partial m} \frac{\partial m}{\partial r}\\
+ &= \frac{H_P}{T}\frac{3\kappa L}{256\pi^2\sigma r^4 T^3}4\rho \pi r^2 
+\end{aligned}
+\end{equation*}
+which if one does some straightforward algerbra becomes
+\begin{equation}
+  \nabla_{rad} =\frac{3H_P\kappa L\rho}{64\pi\sigma r^2 T^4}
+\end{equation}
+
+
+
+The first one involves inserting equations (1) and (2) into equation (3), and getting an expression between $\nabla$, $\nabla_{rad}$ and $\nabla^*$. 
+I also need to find an expression for the pressure scale height, and insert part of it.
+
+\begin{equation}
+ F_C = \rho c_P T \sqrt{g\delta}H_P^{-\frac{3}{2}}\bigg(\frac{l_m}{2}\bigg)^2(\nabla - \nabla^*)^{\frac{3}{2}}
+\end{equation}
+\begin{equation}
+ F_R = \frac{4acGT^4 m}{3\kappa Pr^2}\nabla
+\end{equation}
+\begin{equation}
+ F_R + F_C = \frac{4acGT^4 m}{3\kappa Pr^2}\nabla_{rad}
+\end{equation}
+
+
+Where $\nabla_{rad}$ is the temperature gradient needed for all the energy to be transported by radiation alone. 
+$\nabla$ is the actual temperature gradient in the star.
+$\nabla^*$ is the temperature gradient of a packet of gas.
+$l_m$ is the mixing length.
+$H_P$ is the pressure scale height.
+And the rest of the symbols have their regular meanings.
+
+To start with I need to calculate the scale height:
+\begin{equation}
+ H_P = -P \frac{\partial r}{\partial P}
+\end{equation}
+
+\begin{equation*}
+ \frac{\partial P}{\partial r} = \frac{\partial P}{\partial m}\frac{\partial m}{\partial r} = -\frac{Gm}{4\pi r^4} 4\pi r^2 \rho = -\frac{Gm\rho}{r^2}
+\end{equation*}
+where I have used the epression for $\frac{\partial m}{\partial r}$, we found earlier, and
+\begin{equation*}
+ \frac{\partial P}{\partial m} = -\frac{Gm}{4\pi r^4}
+\end{equation*}
+Inserting this into the equation for the pressure scale height gives:
+\begin{equation}
+ H_P = \frac{Pr^2}{Gm\rho}
+\end{equation}
+Now I have equations for everything one needs to find the expression between $\nabla$, $\nabla_{rad}$ and $\nabla^*$.
+
+Thus it is time to insert (1) and (2) into (3):
+\begin{equation*}
+\begin{aligned}
+ F_R + F_C &= \frac{4acGT^4 m}{3\kappa Pr^2}\nabla_{rad}\\
+\rho c_P T \sqrt{g\delta}H_P^{-\frac{3}{2}}\bigg(\frac{l_m}{2}\bigg)^2(\nabla - \nabla^*)^{\frac{3}{2}} &= \frac{4acGT^4 m}{3\kappa Pr^2}\nabla_{rad} - \frac{4acGT^4 m}{3\kappa Pr^2}\nabla\\
+\rho c_P T \sqrt{g\delta}H_P^{-\frac{3}{2}}\bigg(\frac{l_m}{2}\bigg)^2(\nabla - \nabla^*)^{\frac{3}{2}} &= \frac{4acGT^4 m}{3\kappa Pr^2}(\nabla_{rad} - \nabla)\\
+(\nabla - \nabla^*)^{\frac{3}{2}} &= \bigg(\frac{2}{l_m}\bigg)^2\frac{ H_P^{\frac{3}{2}}}{\sqrt{g\delta}}\frac{4acGT^3 m}{3\rho c_P\kappa Pr^2}(\nabla_{rad} - \nabla)\\
+(\nabla - \nabla^*)^{\frac{3}{2}} &= \bigg(\frac{2}{l_m}\bigg)^2 H_P\sqrt{\frac{H_P}{g\delta}}\frac{4acGT^3 m}{3\rho c_P\kappa Pr^2}(\nabla_{rad} - \nabla)\\
+(\nabla - \nabla^*)^{\frac{3}{2}} &= \bigg(\frac{2}{l_m}\bigg)^2 \frac{Pr^2}{Gm\rho}\sqrt{\frac{H_P}{g\delta}}\frac{4acGT^3 m}{3\rho c_P\kappa Pr^2}(\nabla_{rad} - \nabla)\\
+(\nabla - \nabla^*)^{\frac{3}{2}} &= \bigg(\frac{1}{l_m}\bigg)^2 \sqrt{\frac{H_P}{g\delta}}\frac{64\sigma T^3}{3\rho^2 c_P\kappa}(\nabla_{rad} - \nabla)\\
+(\nabla - \nabla^*)^{\frac{3}{2}} &= \bigg(\frac{1}{l_m}\bigg)^2 U(\nabla_{rad} - \nabla)\\
+\end{aligned}
+\end{equation*}
+which finally gives
+\begin{equation}
+ (\nabla - \nabla^*)^{\frac{1}{2}} = \bigg[\bigg(\frac{1}{l_m}\bigg)^2 U(\nabla_{rad} - \nabla)\bigg]^{\frac{1}{3}}
+\end{equation}
+where 
+\begin{equation*}
+ U = \frac{64\sigma T^3}{3\kappa\rho^2 c_P}\sqrt{\frac{H_P}{g\delta}}
+\end{equation*}
+
+The next step is to insert equation (5.73) from the lecture notes into
+\begin{equation}
+ (\nabla^* - \nabla_{ad} ) = (\nabla -\nabla_{ad} ) - (\nabla - \nabla^* )
+\end{equation}
+For reference equation (5.73) is:
+\begin{equation*}
+ (\nabla^* - \nabla_{ad}) = \frac{32\sigma T^3}{3\kappa\rho^2 c_P v}\frac{S}{dQ}(\nabla - \nabla^*)
+\end{equation*}
+where $S$ is the surface area of the parcel, $d$ the diameter, and $Q$ the surface area normal to the velocity.
+
+It is also convenient to use equation (5.78) from the lecture notes which states that:
+\begin{equation*}
+ v = \sqrt{\frac{g\delta l_m^2}{4H_P}}(\nabla - \nabla^*)^{1/2}
+\end{equation*}
+
+By assuming that the parcel is perfectly spherical, the geometric factor $S/dQ$ can be calculated:
+\begin{equation*}
+ S = 4\pi r^3\\
+\end{equation*}
+\begin{equation*}
+ Q = \pi r^2
+\end{equation*}
+\begin{equation*}
+ \frac{S}{dQ} = \frac{4\pi r_p^2}{2r_p\pi r_p^2} = \frac{2}{r_p}
+\end{equation*}
+
+Setting these equal, and inserting $v$, and $S/dQ$ yields:
+\begin{equation*}
+ \begin{aligned}
+  \frac{32\sigma T^3}{3\kappa\rho^2 c_P \sqrt{\frac{g\delta l_m^2}{4H_P}}}\frac{S}{dQ}(\nabla - \nabla^*)^{1/2} = (\nabla -\nabla_{ad} ) - (\nabla - \nabla^* )\\
+  \frac{64\sigma T^3}{3\kappa\rho^2 c_P}\sqrt{\frac{H_P}{g\delta}} \frac{1}{l_m}\frac{S}{dQ}(\nabla - \nabla^*)^{1/2} = (\nabla -\nabla_{ad} ) - (\nabla - \nabla^* )\\
+  U \frac{1}{l_m}\frac{2}{r_p}(\nabla - \nabla^*)^{1/2} = (\nabla -\nabla_{ad} ) - (\nabla - \nabla^* )\\
+  (\nabla - \nabla^* ) + \frac{2U}{l_m r_p}(\nabla - \nabla^*)^{1/2} - (\nabla -\nabla_{ad} ) = 0 \\
+   \end{aligned}
+\end{equation*}
+This can be written as a second order equation with respect to $(\nabla - \nabla^*)^{1/2}$:
+\begin{equation*}
+ \xi^2 + b\xi + c = 0 
+\end{equation*}
+where $\xi = (\nabla - \nabla^*)^{1/2}$ and $b= \frac{2U}{l_m r_p}$. This has solutions
+\begin{equation*}
+ \xi = -\frac{U}{l_m r_p} \pm \sqrt{\bigg(\frac{U}{l_m r_p}\bigg)^2 + (\nabla - \nabla_{ad})}
+\end{equation*}
+The question now is which of the solutions to proceed with. Studying the right hand side reveales that in the first term all variables are positive, so the term will always be negative. The left hand side is the square root of a difference, and if $\nabla^*$ is larger than $\nabla$ the result would be complex. Because of this I assume that $\nabla$ is larger or equal to $\nabla^*$ at all times. This means that the right hand side must be $0$ or positive at all times, and this is only achieved by choosing a plus sign in front of the root. So finally we have:
+\begin{equation}
+ \xi = -\frac{U}{l_m r_p} + \sqrt{\bigg(\frac{U}{l_m r_p}\bigg)^2 + (\nabla - \nabla_{ad})}
+\end{equation}
+Now I have two equations for $\xi$, and I want to eliminate $\nabla$ from my equations. 
+This is done by first solving (6) and (9) in terms of $\nabla$:
+\begin{equation*}
+\begin{aligned}
+ \xi + \frac{U}{l_m r_p} &= \sqrt{\bigg(\frac{U}{l_m r_p}\bigg)^2 + (\nabla - \nabla_{ad})}\\
+ \bigg(\xi + \frac{U}{l_m r_p}\bigg)^2 &= \bigg(\frac{U}{l_m r_p}\bigg)^2 + (\nabla - \nabla_{ad})
+\end{aligned}
+\end{equation*}
+\begin{equation}
+ \nabla = \bigg(\xi + \frac{U}{l_m r_p}\bigg)^2 - \bigg(\frac{U}{l_m r_p}\bigg)^2 +  \nabla_{ad}
+\end{equation}
+
+and
+\begin{equation*}
+\begin{aligned}
+ \xi &= \bigg[\bigg(\frac{1}{l_m}\bigg)^2 U(\nabla_{rad} - \nabla)\bigg]^{\frac{1}{3}}\\
+\xi^3 &= \bigg(\frac{1}{l_m}\bigg)^2 U(\nabla_{rad} - \nabla)\\
+\frac{l_m^2}{U} \xi^3 &= (\nabla_{rad} - \nabla)
+\end{aligned}
+\end{equation*}
+\begin{equation}
+ \nabla = \nabla_{rad} - \frac{l_m^2}{U} \xi^3
+\end{equation}
+
+Setting these two expressions for $\nabla$ equal gives:
+
+\begin{equation*}
+\begin{aligned}
+  \nabla_{rad} - \frac{l_m^2}{U} \xi^3 &=  \bigg(\xi + \frac{U}{l_m r_p}\bigg)^2 - \bigg(\frac{U}{l_m r_p}\bigg)^2 +  \nabla_{ad}\\
+  \nabla_{rad} - \frac{l_m^2}{U} \xi^3 &=  \xi^2 + \frac{2U}{l_m r_p}\xi + \bigg(\frac{U}{l_m r_p}\bigg)^2 - \bigg(\frac{U}{l_m r_p}\bigg)^2 +  \nabla_{ad}\\
+  \nabla_{rad} - \frac{l_m^2}{U} \xi^3 &=  \xi^2 + \frac{2U}{l_m r_p}\xi +  \nabla_{ad}\\
+ -\nabla_{rad} + \frac{l_m^2}{U} \xi^3 &=  -\xi^2 - \frac{2U}{l_m r_p}\xi -  \nabla_{ad}\\
+  0 &= \frac{l_m^2}{U} \xi^3 +\xi^2 +\frac{2U}{l_m r_p}\xi + (\nabla_{ad}- \nabla_{rad}) \\ 
+\end{aligned}
+\end{equation*}
+This has given us a third degree equation for $\xi$:
+\begin{equation}
+ a\xi^3 + b\xi^2 + c\xi + d = 0
+\end{equation}
+where if one assumes that $r_p = l_m/2$, we get the following:
+
+\begin{equation}
+\begin{aligned}
+ a &= \frac{l_m^2}{U}\\
+ b &= 1 \\
+ c &= \frac{2U}{l_m r_p} = \frac{4U}{l_m^2}\\
+ d &= (\nabla_{ad}- \nabla_{rad})
+\end{aligned}
+\end{equation}
+In general, third degree equations have three solutions. Luckily for us, two of those are complex, and the difference between two temperature gradients must be a real number. 
+This leaves one solution. This solution can be written:
+\begin{equation}
+ \xi  = -\frac{1}{3a}\bigg(b + C + \frac{\Delta_0}{C}\bigg)
+\end{equation}
+where 
+\begin{equation}
+ C = \sqrt[3]{\frac{\Delta_1 + \sqrt{\Delta_1^2 - 4\Delta_0^3}}{2}}
+\end{equation}
+with 
+\begin{equation*}
+\begin{aligned}
+\Delta_0 &= b^2 - 3ac\\
+\Delta_1 &= 2b^3 - 9abc + 27a^2 d\\
+\end{aligned}
+\end{equation*}
+and
+\begin{equation*}
+\begin{aligned}
+ \Delta_1^2 - 4\Delta_0^3 &= -27a^2\Delta\\
+\Delta &= 18abcd -4b^3 d + b^2 c^2 - 4ac^3 -27a^2 d^2
+\end{aligned}
+\end{equation*}
+
+This can of course be written out, and we'll have an enormous equation to look at, but it's strictly not that important what the equation looks like. The important point is that the only variables in the expression that change are $\nabla_{ad}$ and $\nabla_{rad}$, and that means that as long as we know those two gradients, we have an answer to $\xi$!
+
+It should be noted that when actually computing $\xi$ in the program this equation isn't used. Instead I use the root function in the numpy package for python 2.7. This function returns all three roots, and so I just pick out the real part of the one with imaginary part equal to zero, which is exactly the same as what one gets when calculating with the equation for $\xi$ above.
+
+Since $\xi$ can be calculated, the answer can be inserted back into equation (10).
+This gives us $\nabla$, since $\nabla_{rad}$ also can be calculated.
+
+At this point I have expressions for $\nabla$, $\nabla_{rad}$, and $(\nabla - \nabla^*)^{1/2}$.
+
+Next I need an expression for $\nabla_{ad}$.
+This can be written
+\begin{equation}
+ \nabla_{ad} = \frac{P\delta}{T\rho c_P}
+\end{equation}
+
+To find this I need an equation of state. 
+I choose to use the same one as in project 1, since everything so far points towards it being a good enough approximation.
+\begin{equation}
+ \rho = \frac{P\mu m_u}{kT}
+\end{equation}
+The logarithm of this will be needed soon so I also calculate that:
+\begin{equation}
+ ln(\rho) = ln(P) + ln(\mu) + ln(m_u) -ln(k) - ln(T)
+\end{equation}
+Next there are two variables that I will also need:
+\begin{equation}
+\alpha = \bigg(\frac{\partial ln(\rho)}{\partial ln(P)}\bigg)_T = 1
+\end{equation}
+\begin{equation}
+ \delta = \bigg(\frac{\partial ln(\rho)}{\partial ln(T)}\bigg)_P = -1
+\end{equation}
+The last thing I need is an expression for $c_P$.
+From equation (5.34) in the lecture notes we have:
+\begin{equation*}
+ c_P - c_V = \frac{P\delta^2}{\rho T\alpha}
+\end{equation*}
+It turns out that the adiabatic index for a fully ionized ideal gas is
+\begin{equation}
+ \gamma = \frac{c_P}{c_V} = \frac{5}{3}
+\end{equation}
+If we multiply with this on bothsides of the equation above we get
+\begin{equation*}
+\begin{aligned}
+ \gamma(c_P - c_V) &= \frac{\gamma P\delta^2}{\rho T\alpha}\\
+ c_P(\gamma - 1) &= \frac{\gamma P\delta^2}{\rho T\alpha}\\
+c_P &= \frac{\gamma P\delta^2}{\rho T\alpha}\frac{1}{(\gamma - 1)}\\
+c_P &= \frac{5P}{3\rho T}\frac{3}{2}
+\end{aligned}
+\end{equation*}
+\begin{equation}
+ c_P = \frac{5P}{2\rho T}
+\end{equation}
+Inserting this back into the equation for $\nabla_{ad}$ gives
+\begin{equation}
+ \nabla_{ad} = \frac{P\delta}{T\rho}\frac{1}{c_P} = \frac{P\delta}{T\rho}\frac{2\rho T}{5P} = \frac{2}{5}
+\end{equation}
+
+At this point I have expressions for $\nabla$, $\nabla_{rad}$,  $(\nabla - \nabla^*)^{1/2}$, and $\nabla_{ad}$.
+This means that if I insert the answer to $\nabla$ into the equation for $(\nabla - \nabla^*)^{1/2}$ we have equations for all four gradients:
+\begin{equation}
+\begin{aligned}
+ (\nabla - \nabla^*)^{1/2} = \xi\\
+\nabla^* = \nabla- \xi^2 
+\end{aligned}
+\end{equation}
+
+To summarize the equations I have found are:
+\begin{equation}
+\nabla = \nabla_{rad} - \frac{l_m^2}{U} \xi^3
+\end{equation}
+\begin{equation}
+\nabla_{ad} = 2/5
+\end{equation}
+\begin{equation}
+\nabla_{rad} = \frac{3H_P\kappa L\rho}{64\pi\sigma r^2 T^4}
+\end{equation}
+\begin{equation}
+\nabla^* = \nabla- \xi^2 
+\end{equation}
+
+To finish we need to know when to use the different gradients for energy transport.
+This becomes clear when one thinks about what the different gradients are.
+$\nabla$ is the temperature gradient of the star when we have convection.
+$\nabla_{rad}$ is the gradient when we have only radiation.
+$\nabla^*$ is the gradient of the parcel of gas that moves when we have convection.
+$\nabla_{ad}$ is the gradient one would have if the transport was adiabatic.
+Now it is clear that there are actually only two gradients to choose from when transporting the energy.
+Either it is controlled by $\nabla_{rad}$, or by $\nabla$.
+
+The instability criterion that governs this is given by
+\begin{equation}
+ \nabla > \nabla_{ad}
+\end{equation}
+but since these two gradients usually end up very close to each other, I choose to use
+\begin{equation}
+ \nabla_{rad} > \nabla_{ad}
+\end{equation}
+
+In conclusion this means that if the gradient for radiation only, is larger than the one for adiabatic energy transport, convection must be used.
+If this is not the case, we can use the one for radiation only.
+
+\section{Corrections from project 1}
+Since project 1 did not work as intended, a number of things were fixed before implementing the above calculations into the program.
+
+In the first project i included changes in the number of hydrogen and helium atoms. This meant that I did a time evolution of the star which was not intended, and complicated things more than it helped.
+This has been removed.
+I also did a mistake when implementing the limits on the reaction rates in the program. This has been fixed so that it reflects what I wrote in the report of project 1.
+Furthermore I included an approximation of the number of atoms contributed to the number of particles from atoms larger than beryllium, which was not intended. This has been removed, and the expression for $mu$ has been corrected for this.
+The last thing that needed fixing was that I used the total derivative of the density $\rho$. This is not needed since $\rho$ can be calculated from the equation of state, and thus the total derivative is never needed.
+
+\section{Implementing convection in the model}
+The first thing to note is that all the temperature changes in the first project were with regards to mass. In this project, they are with regards to radius.
+This means that instead of using a variable step in mass $dm$ as in the first project, I instead use a variable step in radius $dr$.
+This is the reason why there is a difference between the equations governing change in temperature during radiation between the two projects.
+
+\end{document}

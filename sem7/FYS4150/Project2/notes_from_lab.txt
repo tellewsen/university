@@ -1,0 +1,14 @@
+use compiler criterions
+-O3 vectorizes
+
+for vecotrization we must know the number of iterations for the loop before it starts
+avoid exit statements depending on specific values made in the loop, this makes it impossible to vectorize
+
+avoided statements like switch, go to.
+avoid function calls(some functions like sin,cos are already vectorized so they will work)
+inline functions will also work
+
+
+smart things is to use the no optimization flag first (-O0) to see if the vectorized version works correctly)
+
+-O3 is the recmended way

@@ -1,0 +1,477 @@
+% !TeX spellcheck = en_US
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{datetime}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\pagestyle{fancy}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+
+% Title Page
+\title{Home exam FYS3140}
+\author{Candidate 11}
+
+\fancyhead[L]{Candidate 11}
+\fancyhead[C]{Home exam}
+\fancyhead[R]{Spring 2015}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Problem 1: Fourier transforms and special functions}
+Some special functions are defined in terms of infinite sums. For example, the Riemann zeta function,
+\begin{equation}
+\zeta(s) = \sum_{n=1}^{\infty}\frac{1}{n^s}, (\Re(s) > 1)
+\end{equation}
+and similarly the Dirichlet eta function
+\begin{equation}
+\zeta(s) = \sum_{n=1}^{\infty}(-1)^{n-1}\frac{1}{n^s}, (\Re(s) > 0).
+\end{equation}
+One application of Fourier series is the possibility to compute certain values of this kind of functions.\\
+\subsection{}
+Compute the Fourier series of $f(x) = x^2$ with basic interval $ -\pi < x < \pi$.\\
+
+\textbf{Solution:}\\
+Since $f(x)$ is an even function I start by setting $b_n = 0$ for all $n$.
+The Fourier series can then be written
+\begin{equation}
+f(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty}a_n cos(nx)
+\end{equation}
+and the coefficients can be found with 
+\begin{equation}
+a_n = \frac{2}{\pi}\int_{0}^{\pi}x^2cos(nx)dx.
+\end{equation}
+First I find $a_0$:
+
+\begin{equation*}
+\begin{aligned}[\left]
+a_0 &= \frac{2}{\pi}\int_{0}^{\pi}x^2dx\\
+a_0 &= \frac{2}{\pi}\bigg[\frac{x^3}{3}\bigg]_{0}^{\pi}\\
+a_0 &= \frac{2}{\pi}\frac{\pi^3}{3}\\
+a_0 &= \frac{2\pi^2}{3}
+\end{aligned}
+\end{equation*}
+The rest of the coefficients can be found by using integration by parts on the integral in equation (4), and setting $u=x^2$, $u' = 2x$, $v' = cos(nx)$, $v = \frac{1}{n}sin(nx)$:
+
+\begin{equation*}
+\int x^2cos(nx)dx = \frac{x^2}{n}sin(nx)  - \frac{2}{n}\int xsin(nx)dx\\
+\end{equation*}
+
+Where the integral on the right hand side can be solved with integration by parts. Setting $u=x$, $u' = 1$, $v' = sin(nx)$, $v = \frac{-1}{n}cos(nx)$ gives:
+
+\begin{equation*}
+\begin{aligned}[\left]
+\int xsin(nx)dx &= -\frac{x}{n}cos(nx) +\frac{1}{n}\int cos(nx)dx\\
+&=-\frac{x}{n}cos(nx) + \frac{1}{n^2}sin(nx)
+\end{aligned}
+\end{equation*}
+
+Inserting this back into (4) yields
+\begin{equation*}
+\begin{aligned}[\left]
+a_n &= \frac{2}{\pi}\bigg[\frac{x^2}{n}sin(nx) - \frac{2}{n}\bigg(\frac{-x}{n}cos(nx)+\frac{1}{n^2}sin(nx)\bigg) \bigg]_{0}^{\pi}\\
+    &= \frac{2}{\pi}\bigg(\frac{2\pi}{n^2}cos(n\pi)\bigg)\\
+    &= \frac{4}{n^2}cos(n\pi)\\
+    &= \frac{4(-1)^n}{n^2}
+\end{aligned}
+\end{equation*}
+and thus we have found that
+\begin{equation}
+f(x) = x^2 = \frac{\pi^2}{3} + \sum_{n=1}^{\infty}\frac{4(-1)^n}{n^2}cos(nx)
+\end{equation}
+
+\subsection{}
+Use your result to show that 
+\begin{equation}
+\zeta(2) = \frac{\pi^2}{6}
+\end{equation}
+and
+\begin{equation}
+\eta(2) = \frac{\pi^2}{12}\\
+\end{equation}
+
+\textbf{Solution:}\\
+We start with $\zeta(2)$. Using the definition of the function:
+$$\zeta(2) = \sum_{n=1}^{\infty}\frac{1}{n^2}$$
+
+If one now takes equation (6) and sets $x = \pi$ one finds that
+
+\begin{equation*}
+\begin{aligned}[\left]
+\pi^2 &= \frac{\pi^2}{3} + \sum_{n=1}^{\infty}\frac{4(-1)^n}{n^2}cos(n\pi)\\
+\pi^2 &= \frac{\pi^2}{3} + \sum_{n=1}^{\infty}\frac{4(-1)^n(-1)^n}{n^2}\\
+\pi^2 &= \frac{\pi^2}{3} + \sum_{n=1}^{\infty}\frac{4}{n^2}\\
+\pi^2 - \frac{\pi^2}{3} &=  4\sum_{n=1}^{\infty}\frac{1}{n^2}\\
+\sum_{n=1}^{\infty}\frac{1}{n^2} &=  \frac{3\pi^2 - \pi^2}{12}\\
+\sum_{n=1}^{\infty}\frac{1}{n^2} &=  \frac{\pi^2}{6}\\
+\zeta(2) &= \frac{\pi^2}{6}
+\end{aligned}
+\end{equation*}
+Which was what I wanted to show.\\
+From the definition of $\eta$ we have
+$$\eta(2) = \sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{n^2}$$
+Again I use equation (6) but this time I set $x = 0$ and get the following:
+\begin{equation*}
+\begin{aligned}[\left]
+0 &= \frac{\pi^2}{3} + \sum_{n=1}^{\infty}\frac{4(-1)^n}{n^2}\\
+-\frac{\pi^2}{3} &=  4\sum_{n=1}^{\infty}\frac{(-1)^n}{n^2}\\
+-\frac{\pi^2}{3} &=  -4\sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{n^2}\\
+\sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{n^2} &=  \frac{\pi^2}{12}\\
+\eta(2) &= \frac{\pi^2}{12}
+\end{aligned}
+\end{equation*}
+Which was what I wanted to show.
+
+\section{Problem 2: Contour integral}
+In this problem we will explore the complex integral
+\begin{equation}
+I = \oint_\gamma \frac{dz}{1+z^n}; n \geq 2 \\
+\end{equation}
+along the closed contour $\Gamma = \gamma_1 + \gamma_2 + \gamma_3$ where\\
+$\gamma_1$ : Straight line along the x-axis from the origin to $x = R$\\
+$\gamma_2$ : Arc of a circle of radius R from $z = x = R$ to $z = R e^{2\pi i/n}$\\
+$\gamma_3$ : Straight line from $z = Re^{2\pi i/n}$ to the origin,\\
+where we will let $R \rightarrow \infty$ eventually.
+\subsection{}
+Sketch the integration contour.
+
+\textbf{Solution:}\\
+From $\gamma_2$ it is clear that one starts with a half circle, and that this circle is made smaller by increasing $n$. Since it is clear that the integration contour is dependent on $n$ I've chosen to make a figure for $n=4$. 
+\begin{figure}[H]
+	\begin{center}
+	\begin{tikzpicture}
+	%Draw axis
+	\draw[->] (-2.5,2) -- (6.5,2) node[anchor=north west] {\text{$\Re$}};
+	\draw[->] (2,-2.5) -- (2,6.5) node[anchor=south east] {\text{$\Im$}};
+	%Draw integration countour
+	\draw [red,thick,->](2,2) -- (5,2) node[anchor=north] {\text{$\gamma_1$}};
+	\draw [red,thick,->](5,2) arc (0:90:3cm) node[anchor=south west] {\text{$\gamma_2$}};
+	\draw [red,thick,->](2,5) -- (2,2) node[anchor=south east] {\text{$\gamma_3$}};
+	%Mark singularities
+	\node (a) at (3,3) {};
+	\fill [red] (a) circle (2pt);
+	\node (b) at (1,3) {};
+	\fill [red] (b) circle (2pt);
+	\node (c) at (1,1) {};
+	\fill [red] (c) circle (2pt);
+	\node (d) at (3,1) {};
+	\fill [red] (d) circle (2pt);
+	\end{tikzpicture}
+	\caption{The integration path when $n=4$.}
+	\end{center}
+\end{figure}
+
+\subsection{}
+Find all singularities of the integrand and indicate them in your figure from a).
+
+\textbf{Solution:}\\
+Since the integrand is $\frac{dz}{1+z^n}$, one gets a singularity when 
+\begin{equation*}
+\begin{aligned}[\left]
+z^n &= -1 = e^{i\pi(1+2k)}\\
+z   &= e^{\frac{i\pi(1+2k)}{n}}; k = 0,1,...,n-1\\
+\end{aligned}
+\end{equation*}
+From this it is clear that the number of, and the position of, the singularities is dependent on $n$.
+As an example I get for $n=2$:
+\begin{equation*}
+\begin{aligned}[\left]
+z_1 &= e^{\frac{i\pi}{2}} = i\\
+z_2 &= e^{\frac{3i\pi}{2}} = -i
+\end{aligned}
+\end{equation*}
+while for $n=3$ I get:
+\begin{equation*}
+\begin{aligned}[\left]
+z_1 &= e^{\frac{i\pi}{3}} \\
+z_2 &= e^{\frac{3i\pi}{3}} = -1\\
+z_3 &= e^{\frac{5i\pi}{3}}
+\end{aligned}
+\end{equation*}
+
+In fact, there are $n$ singularities, and if one makes a straight line from one to the next they will form an n-sided polygon. Since it would be a complete mess to mark of singularities for all $n$, I've chosen to mark the ones for $n=4$, since that is the $n$ I chose for the figure earlier.
+
+\subsection{}
+Compute the integral I in the limit $R \rightarrow \infty$.
+
+\textbf{Solution:}\\
+From the residue theorem we have that
+\begin{equation}
+ \int_\Gamma f(z)dz = 2\pi i\sum_N Res[f(z),z_n].
+\end{equation}
+So instead of calculating the integral I can just find all the residues inside $\Gamma$. Now I need to find how many are inside $\Gamma$ depending on what $n$ is.
+For a singularity to be inside $\Gamma$ the following must be true:
+\begin{equation*}
+ \begin{aligned}[\left]
+  \frac{2\pi}{n} &\ge \frac{\pi(1+2k)}{n}\\
+  2\pi &\ge \pi(1+2k)\\
+  2 &\ge 1+2k\\
+  \frac{1}{2} &\ge k\\
+  k &\le \frac{1}{2} 
+ \end{aligned}
+\end{equation*}
+and since k increases in integer steps, this only happens when $k = 0$.
+This means that 
+$$\sum_N Res[f(z),z_n] = Res[f(z),z_0].$$
+And this means that I can conclude that no matter what $n$ is, there will always be a singularity inside the contour $\Gamma$ at $z_0 = e^{i\pi/n}$.
+To find this residue I use that for rational functions $f(z) = \frac{P(z)}{Q(z)}$, we have 
+\begin{equation}
+Res[f(z),z_0] = \frac{P(z_0)}{Q'(z_0)}. 
+\end{equation}
+In our case $P(z) = 1$, and $Q(z) = 1+z^n$. Thus $Q'(z) = nz^{n-1}$, and 
+\begin{equation*}
+\begin{aligned}[\left]
+I &= 2\pi i Res[f(z),z_0] = 2\pi i\frac{1}{nz_0^{n-1}} = \frac{2\pi i}{n}e^{-\frac{i\pi(n-1)}{n}}\\
+I &= -\frac{2\pi i}{n}e^{\frac{i\pi}{n}}
+\end{aligned}
+\end{equation*}
+
+\subsection{}
+Examine the contribution to the integral from the circle arc $\gamma_2$ as $R \rightarrow \infty$. (Hint: perform an upper bound estimate)
+
+\textbf{Solution:}\\
+I want to estimate an upper bound for $\int_{\gamma_2} \frac{1}{1+z^n}dz$.
+This can be calculated by 
+\begin{equation}
+ \bigg|\int_{\gamma_2}f(z)dz\bigg| \le ML
+\end{equation}
+Where $L$ is the length of the contour, and $M$ is the maximum value of $|f(z)|$ on the contour $\Gamma$. 
+
+$L$ is straightforward to find:
+\begin{equation*}
+\begin{aligned} [\left]
+dL &= Rd\theta\\
+ L &= \frac{R2\pi}{n}
+\end{aligned}
+\end{equation*}
+
+Finding M:
+\begin{equation*}
+\begin{aligned}[\left]
+\bigg|\frac{1}{1+z^n}\bigg| &= \frac{|1|}{|1+z^n|} \le \frac{1}{|z^n|-1} = \frac{1}{R^n-1} = M\\
+M &= \frac{1}{R^n-1}
+\end{aligned}
+\end{equation*}
+And thus
+\begin{equation*}
+\begin{aligned}[\left]
+ \bigg|\int_{\gamma_2}f(z)dz\bigg| \le& \lim_{R\rightarrow\infty}\frac{R2\pi}{n}\frac{1}{R^n-1}\\
+\le& \lim_{R\rightarrow\infty}\frac{2\pi}{n^2R^{n-1}}\\
+\le& 0\\
+\bigg|\int_{\gamma_2}f(z)dz\bigg| &\le 0\\
+\int_{\gamma_2}f(z)dz &= 0.\\
+\end{aligned}
+\end{equation*}
+Where I've used L'Hopital's rule to calculate the limit. So the conclusion is that $\gamma_2$ contributes nothing to the integral as long as $R \rightarrow \infty$.
+\subsection{}
+Using your results from c) and d), show that the real integral
+\begin{equation}
+ \int_0^\infty \frac{dx}{1+x^n} = \frac{\pi/n}{sin(\pi/n)}
+\end{equation}
+(Hint: Find a suitable parametrization along $\gamma_3$).
+
+\textbf{Solution:}\\
+I found earlier that
+$$I = \frac{-2\pi i}{n}e^{i\pi/n}$$
+but one can also write the integral for I as
+\begin{equation*}
+ \begin{aligned}[\left]
+  I =& \int_{\gamma_1}\frac{dx}{1+x^n} + \int_{\gamma_2} \frac{dz}{1+z^n} + \int_{\gamma_3}\frac{dz}{1+z^n}\\
+   =& \lim_{R\rightarrow\infty} \int_0^R\frac{dx}{1+x^n} + 0 + \lim_{R\rightarrow\infty} e^{2i\pi/n}\int_R^0\frac{dx}{1+x^n}\\
+   =& \int_0^\infty\frac{dx}{1+x^n} - e^{2i\pi/n}\int_0^\infty\frac{dx}{1+x^n}\\
+   =& (1-e^{2i\pi/n})\int_0^\infty\frac{dx}{1+x^n}.
+ \end{aligned}
+\end{equation*}
+Since I actually want to find the integral in this last expression, I set this expression equal to the one I found earlier for $I$:
+\begin{equation*}
+ \begin{aligned}[\left]
+  \frac{-2\pi i}{n}e^{i\pi/n}   =& (1-e^{2i\pi/n})\int_0^\infty\frac{dx}{1+x^n}\\
+  \int_0^\infty\frac{dx}{1+x^n} =& \frac{\frac{-2\pi i}{n}e^{i\pi/n}}{1-e^{2i\pi/n}}\\
+=& \frac{\pi}{n} \frac{2i}{{e^{\frac{i\pi}{n}}-e^\frac{-i\pi}{n}}}\\
+\int_0^\infty\frac{dx}{1+x^n}=& \frac{\pi/n}{sin(\pi/n)}.
+\end{aligned}
+\end{equation*}
+Which was what I wanted to show.
+
+\section{Problem 3: Fröbenius method}
+Here you will use the Fröbenius method to address the differential equation
+\begin{equation}
+ x^2y'' +xy' + (x^2-\frac{1}{4})y = 0
+\end{equation}
+
+\subsection{}
+Set up and solve the indicial equation
+
+\textbf{Solution:}\\
+Start by assuming a solution of the form
+$$y(x) = \sum_{n=0}^\infty a_nx^{n+s}$$
+which has first derivative
+$$y'(x) = \sum_{n=0}^\infty (n+s)a_nx^{n+s-1}$$
+and second derivative
+$$y''(x) = \sum_{n=0}^\infty (n+s)(n+s-1)a_nx^{n+s-2}.$$
+Inserting these into the DE (14):
+\begin{equation*}
+\sum_{n=0}^\infty (n+s)(n+s-1)a_nx^{n+s} + \sum_{n=0}^\infty (n+s)a_nx^{n+s} + (x^2-\frac{1}{4})\sum_{n=0}^\infty a_nx^{n+s} = 0.
+\end{equation*}
+Since this has to hold for every power of $x$ we start with the first one, $x^s:$
+\begin{equation*}
+\begin{aligned}[\left]
+s(s-1)a_0 + sa_0 + 0 -\frac{1}{4}a_0 &= 0 ; a_0 \neq 0 \\
+s^2 -s +s - \frac{1}{4}  &= 0 \\
+s^2 &= \frac{1}{4}\\
+s  &= \pm\frac{1}{2} 
+\end{aligned}
+\end{equation*}
+
+\subsection{}
+Find the general solution for $y(x)$.
+
+\textbf{Solution:}\\
+Since $s1-s2 = integer$, there is a possibility that the smallest of them will generate a complete solution.
+Because of this I want to try using $s = -1/2$, and see if I can find the coefficients $a_n$. 
+To do this I start with the lowest power of x, e.g $x^{-1/2}$:
+\begin{equation*}
+\begin{aligned}[\left]
+\bigg(-\frac{1}{2}\bigg)\bigg(-\frac{1}{2}-1\bigg)a_0 - \frac{1}{2}a_0 - \frac{1}{4}a_0 &= 0\\
+\bigg(\frac{3}{4} - \frac{3}{4}\bigg)a_0 &= 0
+\end{aligned}
+\end{equation*}
+Which means $a_0$ is undetermined.
+
+Next is $x^{1/2}$:
+\begin{equation*}
+\begin{aligned}[\left]
+\bigg(1-\frac{1}{2} \bigg)\bigg(1-\frac{1}{2}-1\bigg)a_1 + \bigg(1-\frac{1}{2}\bigg)a_1 -\frac{1}{4}a_1 &= 0\\
+-\frac{1}{4}a_1 +\frac{1}{2}a_1 -\frac{1}{4}a_1 &= 0  \\
+\bigg(\frac{1}{2}-\frac{1}{2} \bigg)a_1 &= 0
+\end{aligned}
+\end{equation*}
+Which means $a_1$ is also undetermined. And since I now have two undetermined coefficients, this has produced the complete solution.
+
+Next thing then is to find an equation for $a_n$ with $n \ge 2$:
+\begin{equation*}
+\begin{aligned}[\left]
+\bigg(n-\frac{1}{2}\bigg)\bigg(n-\frac{1}{2}-1\bigg)a_n + \bigg(n-\frac{1}{2}\bigg)a_n +a_{n-2} -\frac{1}{4}a_n &= 0\\
+\bigg(n-\frac{1}{2}\bigg)\bigg(n-\frac{3}{2}\bigg)a_n + \bigg(n-\frac{1}{2}\bigg)a_n -\frac{1}{4}a_n &= -a_{n-2}\\
+\bigg(n^2 -\frac{3n}{2} -\frac{n}{2} +\frac{3}{4} + n - \frac{1}{2} - \frac{1}{4}\bigg)a_n &= -a_{n-2}\\
+\bigg(n^2 - \bigg)a_n &= -a_{n-2}\\
+a_n &= -\frac{a_{n-2}}{n(n - 1)}
+\end{aligned}
+\end{equation*}
+
+This means that the complete solution is
+\begin{equation}
+y(x) = a_0x^{-1/2} +a_1x^{1/2} - \sum_{n=2}^{\infty}\frac{a_{n-2}}{n(n-1)}x^{n-1/2}
+\end{equation}
+or if one doesn't like infinite sums one can write out the start of the sum
+\begin{equation*}
+\begin{aligned}[\left]
+y(x) =& a_0x^{-1/2} +a_1x^{1/2}-\frac{a_0}{2!}x^{3/2}-\frac{a_1}{3!}x^{5/2} +\frac{a_0}{4!}x^{7/2} + \frac{a_1}{5!}x^{9/2} + ...\\
+\end{aligned}
+\end{equation*}
+and notice that this can be written
+\begin{equation}
+\begin{aligned}[\left]
+y(x) =& x^{-1/2}[a_0 cos(x) + a_1 sin(x)]
+\end{aligned}
+\end{equation}
+
+\subsection{}
+Show that the solution can be written as
+\begin{equation}
+ y(x) = AJ_{1/2}(x) + BJ_{-1/2}(x) 
+\end{equation}
+where A and B are constants, and $J_{\pm1/2}(x)$ are Bessel functions of the first kind, of order $\pm\frac{1}{2}$. Bessel functions are important in a number of physics applications, and information about them can be found in mathematical tables.
+
+\textbf{Solution:}\\
+To start with I need to know what these Bessel functions look like. It turns out that Bessel functions of the first kind of order p are defined as 
+\begin{equation}
+J_p(x) = \sum_{n=0}^{\infty}\frac{(-1)^n}{\Gamma(n+1)\Gamma(n+1+p)}\bigg(\frac{x}{2}\bigg)^{2n+p}
+\end{equation}
+which means that
+\begin{equation}
+J_{1/2}(x) = \sum_{n=0}^{\infty}\frac{(-1)^n}{\Gamma(n+1)\Gamma(n+3/2)}\bigg(\frac{x}{2}\bigg)^{2n+1/2}
+\end{equation}
+and 
+\begin{equation}
+J_{-1/2}(x) = \sum_{n=0}^{\infty}\frac{(-1)^n}{\Gamma(n+1)\Gamma(n+1/2)}\bigg(\frac{x}{2}\bigg)^{2n-1/2.}
+\end{equation}
+I will also need that 
+\begin{equation}
+cos(x) = \sum_{n=0}^{\infty}(-1)^n\frac{x^{2n}}{(2n)!}
+\end{equation}
+and 
+\begin{equation}
+sin(x)= \sum_{n=0}^{\infty}(-1)^n\frac{x^{2n+1}}{(2n+1)!}.
+\end{equation}
+First I write $y(x)$ with these other forms for $sin(x)$ and $cos(x)$:
+
+\begin{equation*}
+\begin{aligned}[\left]
+y(x) &= x^{-1/2}\bigg[a_0\sum_{n=0}^{\infty}(-1)^n\frac{x^{2n}}{(2n)!} + a_1\sum_{n=0}^{\infty}(-1)^n\frac{x^{2n+1}}{(2n+1)!}\bigg]\\
+y(x) &= a_0\sum_{n=0}^{\infty}(-1)^n\frac{x^{2n-1/2}}{(2n)!} + a_1\sum_{n=0}^{\infty}(-1)^n\frac{x^{2n+1/2}}{(2n+1)!}\\
+y(x) &= a_0\sum_{n=0}^{\infty}\frac{2^{2n-1/2}(-1)^n}{(2n)!}\bigg(\frac{x}{2}\bigg)^{2n-1/2} + a_1\sum_{n=0}^{\infty}\frac{2^{2n+1/2}(-1)^n}{(2n+1)!}\bigg(\frac{x}{2}\bigg)^{2n+1/2}
+\end{aligned}
+\end{equation*}
+For this to be the same as equation (16), the following must be true:
+\begin{equation}
+\frac{2^{2n-1/2}a_0}{(2n)!} = \frac{B}{\Gamma(n+1)\Gamma(n+1/2)}
+\end{equation}
+and
+\begin{equation}
+\frac{2^{2n+1/2}a_1}{(2n+1)!} = \frac{A}{\Gamma(n+1)\Gamma(n+3/2)}
+\end{equation}
+Start with (22):
+\begin{equation*}
+\begin{aligned}[\left]
+&\frac{2^{2n-1/2}a_0}{(2n)!} = 2^{-1/2}a_0 \frac{2^{2n}}{(2n)!}\\
+&= 2^{-1/2}a_0 \frac{2^{2n}}{(2n)(2n-1)(2n-2)(2n-3)...3\times 2\times 1}\\
+&= 2^{-1/2}a_0 \frac{1}{(n)(n-1/2)(n-1)(n-3/2)...3/2\times 1\times 1/2}\\
+&= 2^{-1/2}a_0 \frac{\Gamma(n)\Gamma(n-\frac{1}{2})\Gamma(n-1)...\Gamma(1)\Gamma(\frac{1}{2})} {(n)\Gamma(n)(n-\frac{1}{2})\Gamma(n-\frac{1}{2})(n-1)\Gamma(n-1)...\Gamma(1)\frac{1}{2}\Gamma(\frac{1}{2})}\\
+&= 2^{-1/2}a_0 \frac{\Gamma(n)\Gamma(n-\frac{1}{2})\Gamma(n-1)...\Gamma(1)\Gamma(\frac{1}{2})} {\Gamma(n+1)\Gamma(n+\frac{1}{2})\Gamma(n)...\Gamma(1)1/2\Gamma(\frac{1}{2})}\\
+&= 2^{-1/2}a_0 \frac{\Gamma(1)\Gamma(\frac{1}{2})} {\Gamma(n+1)\Gamma(n+\frac{1}{2})}\\
+&= 2^{-1/2}a_0 \frac{\pi^{1/2}} {\Gamma(n+1)\Gamma(n+\frac{1}{2})}\\
+\end{aligned}
+\end{equation*}
+which works if I define 
+\begin{equation}
+B = a_0\bigg(\frac{\pi}{2}\bigg)^{1/2}.
+\end{equation}
+This is okay, since all I've actually done to get $B$ is multiply $a_0$ by some constant.
+Similarly for (23):
+\begin{equation*}
+\begin{aligned}[\left]
+&\frac{2^{2n+1/2}a_1}{(2n+1)!} = 2^{1/2}a_1 \frac{2^{2n}}{(2n)!}\\
+&= 2^{1/2}a_1 \frac{2^{2n}}{(2n+1)(2n)(2n-1)(2n-2)(2n-3)...3\times 2\times 1}\\
+&= 2^{1/2}a_1 \frac{1}{(n+1/2)(n)(n-1/2)(n-1)(n-3/2)...3/2\times 1\times 1}\\
+&= 2^{1/2}a_1 \frac{\Gamma(n+\frac{1}{2})\Gamma(n)\Gamma(n-\frac{1}{2})...\Gamma(1)} {(n+1/2)\Gamma(n+\frac{1}{2})(n)\Gamma(n)(n-\frac{1}{2})\Gamma(n-\frac{1}{2})...\Gamma(1)}\\
+&= 2^{1/2}a_1 \frac{\Gamma(n+\frac{1}{2})\Gamma(n)\Gamma(n-\frac{1}{2})\Gamma(n-1)...\Gamma(1)} {\Gamma(n+\frac{3}{2})\Gamma(n+1)\Gamma(n+\frac{1}{2})\Gamma(n)...\Gamma(1)}\\
+&= 2^{1/2}a_1 \frac{1} {\Gamma(n+1)\Gamma(n+\frac{3}{2})}\\
+\end{aligned}
+\end{equation*}
+which works if I define 
+\begin{equation}
+A = a_1 2^{1/2}.
+\end{equation}
+Notice that $A$ is only $a_1$ multiplied by some constant, just like $B$.
+Then finally 
+\begin{equation}
+y(x) = x^{-1/2}[a_0 cos(x) + a_1 sin(x)] = AJ_{1/2}(x) + BJ_{-1/2}(x)
+\end{equation}
+where 
+\begin{equation*}
+A = a_1 2^{1/2} , B = a_0\bigg(\frac{\pi}{2}\bigg)^{1/2}.
+\end{equation*}
+Which is what I wanted to show.
+\end{document}

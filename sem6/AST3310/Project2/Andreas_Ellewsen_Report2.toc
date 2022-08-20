@@ -1,0 +1,16 @@
+\contentsline {section}{\numberline {1}Project}{2}
+\contentsline {section}{\numberline {2}Assumptions}{2}
+\contentsline {section}{\numberline {3}Calculations}{2}
+\contentsline {section}{\numberline {4}Corrections from project 1}{10}
+\contentsline {section}{\numberline {5}Implementing convection in the model}{10}
+\contentsline {section}{\numberline {6}Results}{11}
+\contentsline {subsection}{\numberline {6.1}Energy production}{11}
+\contentsline {subsection}{\numberline {6.2}Energy transport}{14}
+\contentsline {subsection}{\numberline {6.3}Mass}{15}
+\contentsline {subsection}{\numberline {6.4}Pressure}{16}
+\contentsline {subsection}{\numberline {6.5}Density}{17}
+\contentsline {subsection}{\numberline {6.6}Temperature}{18}
+\contentsline {section}{\numberline {7}Conclusion}{19}
+\contentsline {section}{\numberline {8}Collaboration}{20}
+\contentsline {section}{\numberline {9}Appendix}{20}
+\contentsline {subsection}{\numberline {9.1}The python code}{20}

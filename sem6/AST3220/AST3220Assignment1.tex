@@ -1,0 +1,219 @@
+% !TeX spellcheck = en_US
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+% Title Page
+\title{AST3220 - Compulsory assignment: Exam from October 2006}
+\author{Andreas Ellewsen}
+
+\begin{document}
+\maketitle
+%\tableofcontents
+\section{Problem 1}
+We will consider flat universe models with dust and vacuum energy (a cosmological constant).
+\subsection{}
+Calculate the comoving radial coordinate $r_{PH}$ of the particle horizon in the Einstein-de Sitter model at the present epoch, and to the event horizon $r_{EH}$ in a de Sitter universe at the present epoch ($t=t_{0}$).\\
+\textbf{Solution:}
+In a flat Einstein de Sitter model the scale factor and Hubble constant can be written 
+\begin{equation}
+a = a_0(\frac{t}{t_0})^2 , H_0 = \frac{2}{3t_0},
+\end{equation}
+and in a flat de Sitter model, the scale factor can be written
+\begin{equation}
+a = a_0exp[H_0(t-t_0)].
+\end{equation}
+First consider the Einstein-de Sitter universe. To find the comoving coordinate $r_ {EH}$ of the particle horizon one considers the integral
+$$I(t_1,t_2) = \int_{t_1}^{t_2}\frac{cdt}{a(t)} = \frac{c}{a_0}\int_{t_1}^{t_2}(\frac{t_0}{t})^{2/3}dt = \frac{ct_0^{2/3}}{a_0}\int_{t_1}^{t_2}t^{2/3}dt = \frac{3ct_0^{2/3}}{a_0}(t_2^{1/3} - t_1^{1/3}).$$
+The comoving coordinate $r_{PH}$ of the particle horizon can be calculated with the following limits:
+$$r_{PH} = I(t_1\to0,t_2=t_0)= \lim_{t_1 \to 0}\frac{3ct_0^{2/3}}{a_0}(t_2^{1/3} - t_1^{1/3})= \frac{3ct_0}{a_0} = \frac{2c}{a_0H_0},$$
+where I've used $H_0 = \frac{2}{3t_0}$.
+
+To find the comoving coordinate of the event horizon in the de Sitter universe one considers the same integral
+$$I(t_1,t_2) = \int_{t_1}^{t_2}\frac{cdt}{a(t)}$$ 
+$$= \frac{c}{a_0}\int_{t_1}^{t_2}exp[-H_0(t-t_0)]dt $$
+$$= \frac{c}{a_0}exp[H_0t_0]\int_{t_1}^{t_2}exp[-H_0t)] $$
+$$= \frac{c}{a_0H_0}(exp[-H_0t_1]-exp[-H_0t_2]) $$
+but the limits need to be changed slightly such that 
+$$r_{EH} = I(t_1=t_0, t_2\to\infty)$$
+$$= \lim_{t2\to\infty}\frac{c}{a_0H_0}(exp[-H_0t_1]-exp[-H_0t_2])$$
+$$ = \frac{c}{a_0H_0}exp[-H_0t_0]$$
+where it is normal to set $t_0 = 0$ since $t = 0$ isn't special in a de Sitter universe like it is in an Einstein de Sitter universe. Thus one can write $$r_{EH} = \frac{c}{a_0H_0}.$$
+\subsection{}
+Show that the event horizon in the de Sitter universe corresponds to a redshift of $z = 1$.\\
+\textbf{Solution:}
+Start by writing down the equation for redshift in a de Sitter universe:
+$$z + 1 = \frac{a_0}{a(t)} = exp[-H_0(t-t_0)].$$
+Considering a light signal sent at some time $t$ in the past, arriving today at time $t_0$ has comoving coordinate
+$$r = \int_{t_0}^{t}\frac{cdt}{a}$$
+$$  = \frac{c}{a_0}exp[H_0t_0]\int_{t_0}^{t}exp[-H_0t]$$
+$$  = \frac{c}{a_0}(exp[-H_0(t-t_0)]-1)$$
+which when inserting the equation for redshift becomes
+$$r = \frac{cz}{a_0H_0}.$$ 
+Setting this coordinate equal to that of the event horizon gives
+$$ \frac{c}{a_0H_0} = \frac{cz}{a_0H_0}$$
+$$ z = 1$$
+\subsection{}
+An unnamed teacher of a course on cosmology wants to get as far away as possible before the student evaluations of his course are in. He lives in a Einstein-De Sitter universe, and decides to go for a trip to the particle horizon. Assuming that he starts his journey at $t = t_{0}$ and travels at the speed of light, determine the cosmic time $t_f$ when he arrives at his destination.\\
+\textbf{Solution:}
+If we throw everything we know about accelerating masses out the window to begin with and accept that the teacher \textit{can} and \textit{does} reach light speed instantly one can calculate the comoving coordinate of the teacher by the same integral as earlier:
+$$r = \int_{t_0}^{t_f}\frac{cdt}{a}= \frac{ct_0^{2/3}}{a_0}\int_{t_0}^{t_f}t^{-2/3}dt = \frac{3ct_0}{a_0}[(\frac{t_f}{t_0})^{1/3} - 1 ].$$
+Setting this coordinate equal to the one for the particle horizon shows that
+$$\frac{2c}{a_0H_0} = \frac{3ct_0}{a_0}[(\frac{t_f}{t_0})^{1/3}-1],$$ which when inserting for $t_0$ in the numerator leads to 
+$$ 1 = (\frac{t_f}{t_0})^{1/3} -1$$
+$$2t_0{1/3} = t_f^{1/3}$$
+$$t_f = 8t_0$$
+
+\subsection{}
+If the teacher lived in a de Sitter universe and wanted to go to the event horizon, at what cosmic time will he get there if he starts today and travels at the speed of light.\\
+\textbf{Solution:}
+Here one follows the same procedure as in the last problem, but for the de Sitter model.
+Thus:
+$$r_{PH} = \frac{c}{a_0H_0}$$
+And then calculate the integral for the coordinate of the teacher on his trip:
+$$r = \int_{t_0}^{t_f}\frac{cdt}{a}= \frac{cexp[H_0t_0]}{a_0}\int_{t_0}^{t_f}exp[-H_0t]dt$$
+$$ = \frac{cexp[H_0t_0]}{a_0H_0}([exp(-H_0t_0)]-exp[-H_0t_f])$$
+$$ = \frac{c}{a_0H_0}[1-exp[-H_0(t_0-t_f)]].$$
+Following the same procedure as earlier we set this coordinate equal to the particle horizon and get
+$$\frac{c}{a_0H_0}  = \frac{c}{a_0H_0}[1-exp[-H_0(t_0-t_f)]]$$
+$$ 1 = 1-exp[-H_0(t_0-t_f)]$$ 
+which unfortunately for the teacher can't be met unless he/she finds some way to travel backwards in time infinitely.
+\subsection{}
+Show that the event horizon at our epoch, $t= t_0$, in models with both dust and vacuum energy has comoving radial coordinate
+\begin{equation}
+r_{EH} = \frac{c}{H_0}\int_{-1}^{0}\frac{dz}{\sqrt{\Omega_{m0}(1+z)^3+1-\Omega_{m0}}},
+\end{equation}
+and that the particle horizon at our epoch has comoving radial coordinate
+\begin{equation}
+r_{PH} = \frac{c}{H_0}\int_{0}^{\infty}\frac{dz}{\sqrt{\Omega_{m0}(1+z)^3+1-\Omega_{m0}}}.
+\end{equation}
+\\
+\textbf{Solution:}
+In the case of a flat universe with matter and vacuum energy (and no radiation) the Friedman equation can be written on the form 
+$$\frac{H^2}{H_0^2} = \Omega_{m0}(\frac{a_0}{a})^3+\Omega_{\Lambda0}$$
+\begin{equation}
+H = H_0\sqrt{\Omega_{m0}(1+z)^3+\Omega_{\Lambda0}}
+\end{equation}
+and we also have that
+\begin{equation}
+\Omega_{m0} + \Omega_{\Lambda0} = 1
+\end{equation}
+First we need to play with some variables by using the equation for redshift
+$$1 + z = \frac{a_0}{a}$$
+$$ a =  \frac{a_0}{1+z}$$
+\begin{equation}
+da = -\frac{a_0}{(1+z)^2}dz
+\end{equation}
+and we also need that
+\begin{equation}
+dt = \frac{da}{\dot{a}}
+\end{equation}
+When those things are established we want to find the comoving coordinate of the event horizon, which is done in the same way as before:
+
+$$r_{EH} = I(t_1=t_0,t_2\to\infty)=\int_{t_0}^{\infty}\frac{cdt}{a} = c\int_{t_0}^{\infty}\frac{ada}{a^2\dot{a}} = c\int_{t_0}^{\infty}\frac{da}{a^2H}$$
+$$=c\int_{z(a(t_0))}^{z(a(t\to\infty))}\frac{-a_0dz(1+z)^2}{(1+z)^2a_0^2H_0\sqrt{\Omega_{m0}(1+z)^3+\Omega_{\Lambda0}}}$$
+$$=c\int_{z(a(t_0))}^{z(a(t\to\infty))}\frac{-a_0dz}{a_0^2H_0\sqrt{\Omega_{m0}+\Omega_{\Lambda0}}}$$
+$$=\frac{c}{a_0H_0}\int_{z(a(t_0))}^{z(a(t\to\infty))}\frac{-dz}{(H_0\sqrt{\Omega_{m0}(1+z)^3+ 1-\Omega_{m0}}}$$
+$$=\frac{c}{a_0H_0}\int_{-1}^{0}\frac{dz}{\sqrt{\Omega_{m0}(1+z)^3 + 1-\Omega_{m0}}},$$ which if one sets $a_0 = 1$ is what we wanted to show.
+
+For the particle horizon the calculation is identical except for the integration boundaries:
+$$r_{PH} = I(t_1\to0,t_2=t_0)=\int_{0}^{t_0}\frac{cdt}{a} = c\int_{0}^{t_0}\frac{ada}{a^2\dot{a}} = c\int_{0}^{t_0}\frac{da}{a^2H}$$
+$$=c\int_{z(a(0))}^{z(a(t_0))}\frac{-a_0dz(1+z)^2}{(1+z)^2a_0^2H_0\sqrt{\Omega_{m0}(1+z)^3+\Omega_{\Lambda0}}}$$
+$$=c\int_{z(a(0))}^{z(a(t_0))}\frac{-a_0dz}{a_0^2H_0\sqrt{\Omega_{m0}+\Omega_{\Lambda0}}}$$
+$$=\frac{c}{a_0H_0}\int_{z(a(0))}^{z(a(t_0))}\frac{-dz}{(H_0\sqrt{\Omega_{m0}(1+z)^3+ 1-\Omega_{m0}}}$$
+$$=\frac{c}{a_0H_0}\int_{0}^{\infty}\frac{dz}{\sqrt{\Omega_{m0}(1+z)^3 + 1-\Omega_{m0}}},$$ which if one sets $a_0 = 1$ is what we wanted to show.
+It should be noted that I have assumed that the scale factor $a$ is of a form such that $a(0) = 0$ and $\lim_{t\to\infty}a(t) \to\infty.$
+
+
+\subsection{}
+Show that models of the type in 1.e with $0 < \Omega_{m0} < 1$ have both a particle horizon and a event horizon. That is, that both integrals above have finite values. (Hint: You don't have to calculate the integrals explicitly, only show that they converge)\\
+\textbf{Solution:}
+Both of the integrals are of the form 
+$$I = A\int_{a}^{b}\frac{dz}{\sqrt{(1+z)^3+C}}$$
+which I have no knowledge of how to solve, and no intuition of whether converges or diverges.
+\section{Problem 2}
+\subsection{}
+Show that the equation of motion of the particle is
+\begin{equation}
+\ddot{R} = -\frac{\Omega_{m0}H_0^2}{2a^3}R,
+\end{equation}
+where the symbols have their usual meaning.\\
+\textbf{Solution:}
+From the information in the text one can deduce that the Friedman equation can be written
+$$\frac{H^2}{H_0^2} = \Omega_{m0}(\frac{a_0}{a})^3$$
+\begin{equation}
+H^2 = \Omega_{m0}(\frac{1}{a})^3H_0^2
+\end{equation}
+Then calculating blindly using Newtons 2nd law one gets
+$$\ddot{R} = -\frac{GM}{R^2}$$
+and then assuming that the only mass the particle is affected by is the mass inside the volume $V = \frac{4}{3}\pi R^3$, one can write $M = \rho V = \rho\frac{4}{3}\pi R^3$, which inserted into the equation for $\ddot{R}$ becomes
+\begin{equation}
+\ddot{R} = -\frac{4}{3}G\rho\pi R
+\end{equation}
+If one then writes Friedman's 1st equation for a flat universe one gets
+$$\dot{a}^2 = \frac{8\pi G\rho a^2}{3}$$
+\begin{equation}
+\frac{\dot{a}^2}{2a^2} = \frac{4\pi G\rho}{3}
+\end{equation}
+Inserting (12) into (11) on gets
+$$\ddot{R} = -\frac{R\dot{a}^2}{2a^2} = -\frac{H^2R}{2} = -\frac{\Omega_{m0}H_0^2R}{2a^3},$$
+which is what we wanted to show.
+
+\subsection{}
+Find $R(t)$ if the universe is described a by an Einstein-de Sitter model.
+\\
+\textbf{Solution:}
+Since we're working with an Einstein-de Sitter model we can write the scale factor 
+$$ a = a_0(t/t_0)^{2/3}$$
+and the calculation for $\ddot{R}$ turns out identical. Thus we have
+$$\ddot{R} = -\frac{\Omega_{m0}H_0^2R}{2a^3} = -\frac{2\Omega_{m0}R}{9a_0^3t^2}$$.
+If on then assumes, like we've done earlier, that $a_0 = 1$ and since $\Omega_{m0} =1$
+\begin{equation}
+\ddot{R} + \frac{2R}{9t^2}= 0 
+\end{equation}
+This can be written on the form of the Cauchy-Euler equation as
+$$t^2\ddot{R} + 2R= 0 $$
+, which by doing the substitution $t = exp(z)$ and playing around with variables can be reduced to 
+$$\ddot{R - \dot{R} + \frac{2}{9}R = 0}$$
+which one solves by treating the derivatives as variables giving
+$$\lambda^2 - \lambda + \frac{2}{9} = 0$$
+which has solutions $\lambda = 1/3 and \lambda=2/3$.
+Thus:
+$$R(z) = Ae^{z/3} + Be^{2z/3}$$
+and substituting back 
+\begin{equation}
+R(t) = At^{1/3} + Bt^{2/3}
+\end{equation}
+To decide the constants $A$ and $B$ we use the initial conditions of the test particle;$R(t_0) = R_0 $ and $\dot{R(t_0)} = 0$.
+Thus we find that
+$$R_0 = At_0^{1/3} + Bt_0^{2/3}$$
+\begin{equation}
+A  = R_0t^{-1/3}-Bt_0^{1/3}
+\end{equation}
+Differentiating R yield
+$$\dot{R}=\frac{A}{3}t^{-2/3]}+ \frac{2B}{3}t^{-1/3}$$
+and thus
+$$0 = \frac{A}{3}t_0^{-2/3} + \frac{2B}{3}t_0^{-1/3}$$
+\begin{equation}
+A = -2Bt_0^{1/3}
+\end{equation}
+Setting (15) and (16) equal to each other:
+$$-2Bt_0^{1/3} = R_0t^{-1/3} - Bt_0^{1/3}$$
+$$B = -R_0t_0^{2/3}$$
+which inserted into (16) gives
+$$A = 2R_0t_0^{-1/3}$$
+and then the final equation of motion for the particle in the de Sitter universe starting at rest at $R = R_0$ is 
+$$R(t) = R_0[2(t/t_0)^{1/3}- (t/t_0)^{2/3}]$$
+\subsection{}
+How does the particle move initially? How does it move for $t \gg t_0$? Compare this to a particle that starts in the same position, but follows the expansion of the universe.
+\\
+\textbf{Solution:}
+At first $t$ is very close to $t_0$ so R is then positive since the first part of the parenthesis dominates. However as time goes on the second part will start dominating and then it will start moving in the negative direction. In other words; the particle will slowly move towards the origin and at some point it will pass by us, assuming we don't interact, and keep going indefinitely.
+\end{document}

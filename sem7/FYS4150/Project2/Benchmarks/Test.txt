@@ -1,0 +1,34 @@
+Test1:
+Running the program with n = 2, and rho_max=50 with V[i] = rho[i]*rho[i]; as the potential should produce the 
+following output:
+---------------------------------
+Jacobi time = 7e-06 sec
+Number of iterations: 1
+625.003
+2500
+6.9522e-310
+6.9522e-310
+0
+Armadillo time = 7.4e-05 sec
+625.003
+2500
+6.95312e-310
+6.95312e-310
+0
+Output written to file output.txt
+---------------------------------
+Note that the program finishes in 1 iteration, confirming that the jacobi method is implemented correctly.
+
+Test2 : 
+Running the program with n=1000 ,rho_max=50 , and the potential for two electrons gives the following output when checking for orthogonality:
+---------------------------------
+Armadillo time = 1.82003 sec
+17.4485
+37.0708
+56.8515
+76.7008
+96.5874
+All the eigenvectors are orthogonal!
+Output written to file output.txt
+---------------------------------
+Note the magical line telling us that the eigenvectors are orthogonal, confirming that the method works.

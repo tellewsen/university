@@ -1,0 +1,348 @@
+\documentclass[12pt,norsk,a4paper]{article}
+\usepackage{graphicx}
+\usepackage[norsk]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\begin{document}
+\begin{titlepage}
+\begin{center}
+Obligatorisk oppgave i Elektromagnetisme\\
+Syklotron\\
+-\\
+Thor Andreas Seiff Ellewsen\\
+tellewsen@gmail.com
+\begin{figure}[htb]
+\includegraphics[width=\textwidth]{Zyklotron}\\
+\end{figure}
+
+\end{center}
+\end{titlepage}
+
+\newpage
+Oppgave1: Partikkel i elektrisk felt\\
+I denne oppgaven skal man skrive et program som beregner banen til en partikkel i et elektrisk felt.
+Vi gjør tidsintegrasjonen ved hjelp av Euler-Cromer metoden.\\
+
+a{)} Får oppgitt følgende:\\
+$m=2$, $q=3$, $\textbf{E}= (5,0,0)$, $\textbf{r}(t=0)= (0,0,0)$ og $\textbf{v}(t=0)=(0,0,0)$.\\
+Skal integrere bevegelsen fra $t = 0$ til $t = 1$ med $dt = 10^{-4}$.\\
+Partikkelens x-posisjon skal plottes som funksjon av t for alle t\\
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=\textwidth]{opg1ab}\\
+\caption{Ser at den numeriske og den analytiske løsningen overlapper}
+\end{center}
+\end{figure}
+\newpage
+
+
+b{)} Skal løse problemet analytisk.
+\\
+Bruker opplysningene fra a og får:
+\begin{center}
+$\textbf{F} = q\textbf{E} = m\textbf{a}$\\
+$\Downarrow$\\
+$q\textbf{E}= m\textbf{a}$\\
+$\Downarrow$\\
+$\textbf{a} = \frac{q\textbf{E}}{m}$\\
+$\Downarrow$\\
+$\textbf{v}(t) = \int(\textbf{a}) dt = \int(\frac{q\textbf{E}}{m}) dt$\\
+$\Downarrow$\\
+$r(t) = \int(v) dt=\int(\int(\frac{q\textbf{E}}{m})dt)dt$\\
+$\Downarrow$\\
+$r(t) = \int(\frac{q\textbf{E}}{m}t + V_{0}) dt$\\
+$\Downarrow$\\
+$r(t) = \frac{1}{2}$$\frac{q\textbf{E}}{m}t^{2}+V_{0}t + r_{0}$\\
+\end{center}
+Setter inn tall:\\
+\begin{center}
+$\textbf{r}(t) = \frac{1}{2}\frac{3(5,0,0)}{2}t^{2} +(0,0,0)t + (0,0,0)$\\
+$\Downarrow$\\
+$\textbf{r}(t) = (\frac{15}{4}t^{2},0,0)$\\
+$\Downarrow$\\
+$r(1) = (\frac{15}{4},0,0)$\\
+\end{center}
+Denne løsningen er inkludert i plottet over\\
+
+c{)} og d{)} Velger \textbf{E}= (1,2,-5), setter dette inn i programmet og får ut figurene på de neste sidene.\\
+Skal også svare på hvorfor vi kan kalle dette en ballistisk bevegelse:\\
+Det kan vi gjøre siden ballistisk bevegelse er definert som bevegelse av en masse i eksterne kraftfelt uten fremdrift fra massen selv. I denne oppgaven jobber vi kun med krefter fra et E-felt. Ergo har vi her ballistisk bevegelse.
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{opg1cpos}\\
+\caption{Posisjonen til partikkelen}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{opg1cvel}\\
+\caption{Farten til partikkelen}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{opg1d}\\
+\caption{Posisjonen i 3D}
+\end{center}
+\end{figure}
+
+\newpage
+Oppgave2: Skal her bytte ut E-feltet med et magnetisk felt \textbf{B}.\\
+Partikkelen påvirkes nå av en magnetisk kraft
+\
+\begin{center}
+$\textbf{F}_{B} = q(\textbf{v}\times\textbf{B})$
+\end{center}
+a{)}\
+Skal bruke at $m = 2$, $q = 3$, $\textbf{r}(t=0)=(0,0,0,)$, $\textbf{v}=(5,0,0)$, $\textbf{B}=(0,0,3)$ og så se på bevegelsen fra $t = 0$ til $t = 5$.\\
+Bruker så og si akkurat samme program som i oppgave 1, men bytter ut kraften med den nye.\\
+Resultatet kan sees på figurene på de neste sidene.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=\textwidth]{opg2apos}\\
+\caption{Posisjonen til partikkelen}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{opg2avel}\\
+\caption{Farten til partikkelen}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{opg2a3D}\\
+\caption{Posisjonen i 3D}
+\end{center}
+\end{figure}
+
+\newpage
+b{)}\\
+Her skal vi bruke programmet vi har laget til å finne omløpstiden.\\
+Vi kunne sikkert laget en test i programmet som fant ut når dette skjedde, men jeg ser ikke helt poenget når vi enkelt kan lese av dette på figuren.\\
+Leser av omløpstiden i figuren og får ut en omløpstid på $t \approx 1.4$\\
+\\
+c{)} I denne oppgaven skal vi først finne et utrykk for vinkelhastigheten til partikkelen og deretter løse omløpstiden analytisk\\
+Har at:
+\begin{center}
+$a = \frac{v^{2}}{r}$ og $\omega = \frac{v}{r}$\\
+\end{center}
+Har så:
+\begin{center}
+$\textbf{F}_{B} = q(\textbf{v}\times\textbf{B})$\\
+$\Downarrow$\\
+$F = qvB = ma$\\
+\end{center}
+Får da\\
+\begin{center}
+$m\frac{v^{2}}{r} = qvB$\\
+$\Downarrow$\\
+$\frac{mv}{r} = qB$\\
+$\Downarrow$\\
+$v = \frac{qBr}{m} (\star)$\\
+$\Downarrow$\\
+$\frac{v}{r} = \frac{qB}{m}$\\
+$\Downarrow$\\
+$\omega = \frac{qB}{m}$
+\end{center}
+Definisjonen av omløpstid:
+\begin{center}
+$T = \frac{2\pi}{\omega}$\\
+\end{center}
+Dette gir oss:
+\begin{center}
+$T = \frac{2\pi m}{qB}$\\
+\end{center}
+Setter inn tall:
+\begin{center}
+$T = \frac{4\pi}{9} \approx 1.4$\\
+\end{center}
+Feilen mellom analytisk og numerisk er \emph{imponerende} liten!\\
+\\
+d{)} Går tilbake til a, endrer til $\textbf{v}(t = 0) = (5,0,2)$ og får da figuren på neste side.\\
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{opg2d3D}\\
+\caption{Posisjonen til partikkelen}
+\end{center}
+\end{figure}
+
+\newpage
+Oppgave3:\\
+a{)} Skal her lage nytt program for partikkel i \textbf{E}- og \textbf{B}-felt. 
+Bruker $m = 1$, $q = 1$, $\textbf{v}(t = 0) = (0,0,0)$ og $\textbf{r}(t = 0) = (0,0,0)$. 
+Setter $\textbf{B} = (0,0,1)$ og
+\begin{center}
+$\textbf{E}= \left\{\begin{array}{cc}\cos(\omega t)\hat{\textbf{e}}_{x} &\mbox{ for }
+x\in [-0.1,0.1],\\0  & \mbox{ ellers }\end{array}\right.$
+\end{center}
+
+Lar tiden gå fra 0 til 50 og får ut figurene på de neste sidene.\\
+Vi ser at radius ikke øker like mye i hvert omløp. \\
+Dette skyldes at partikkelen tilbringer kortere tid i E-feltet for hvert omløp. Ergo får ikke feltet akselerert partikkelen like mye for hvert omløp. Ergo får vi en raskere økning av radius i starten enn etterhvert.\\
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=\textwidth]{opg3apos}\\
+\caption{Posisjonen til partikkelen}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{opg3avel}\\
+\caption{Farten til partikkelen}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{opg3a3D}\\
+\caption{Posisjonen i 3D}
+\end{center}
+\end{figure}
+
+\newpage
+
+b{)} Setter radiusen til D-ene $r_{D} = 2.6$ og tvinger programmet til å sette $F = 0$ hvis $r \geq r_{D}$\\
+\\De resulterende plottene kan sees under:\\
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=\textwidth]{opg3bpos}\\
+\caption{Posisjonen til partikkelen}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{opg3bvel}\\
+\caption{Farten til partikkelen}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{opg3b3D}\\
+\caption{Posisjonen i 3D}
+\end{center}
+\end{figure}
+\newpage
+
+c{)} Skal her finne farten som partikkelen forlater syklotronen med.\\
+Dette løses enkelt med en test i programmet og vi får ut at partikkelen forlater syklotronen med fart $v = 0.41$\\
+\\
+d{)} Skal nå finne et uttrykk for den kinetiske energien til partikkelen.\\
+Har at:
+\begin{center}
+$E_{k} = \frac{1}{2}mv^{2}$\\
+\end{center}
+Bruker $(\star)$ fra oppgave 2c for v og får så:
+\\
+\begin{center}
+$E_{k} = \frac{1}{2}m(\frac{qB}{m})^{2}$\\
+$\Downarrow$\\
+$E_{k} = \frac{1}{2}\frac{q^{2}B^{2}r^{2}}{m}$\\
+\end{center}
+Får så beskjed om å finne energien til et proton når $r = 1m$ og $B = 1T$.\\
+Svaret skal uttrykkes i MeV. \\
+\begin{center}
+$E_{k} = \frac{1}{2}\frac{q_{p}^{2}B^{2}r^{2}}{m_{p}}$\\
+$\Downarrow$\\
+$E_{k} = \frac{1}{2}\frac{(1.6\times10^{-19})^{2}}{1.67\times10^{-27}} \frac{C^2T^2m^2}{kg}$\\
+$\Downarrow$\\
+$E_{k} = \frac{1}{2}\frac{(1.6\times10^{-19})^{2}}{1.67\times10^{-27}} \frac{kgm^2}{s^2}$\\
+$\Downarrow$\\
+$E_{k} \approx 7.67\times10^{-12}J$
+\end{center}
+Har at $1J = 6.24150934\times10^{18}eV$\\
+Konverterer og får:
+\begin{center}
+$E_{k} \approx 7.67\times10^{-12}\times6.24150934\times10^{18}eV$\\
+$\Downarrow$\\
+$E_{k} \approx 4.8\times10^{7}eV$\\
+$\Downarrow$\\
+$E_{k} \approx 48MeV$
+\end{center}
+Skal så sammenligne med protonmassen og kommenter den ikke-relativistiske tilnæmingen som er gjort i modellen.\\
+Har at energien til et proton i ro er:\\
+\begin{center}
+$E = m_p c^2$\\
+$\Downarrow$\\
+$E = 1.67\times10^-27\times(3\times10^8)^2 J$\\
+\end{center}
+Konverterer fra J til eV:
+\begin{center}
+$E = 1.67\times10^-27\times(3\times10^8)^2\times6.24150934\times10^{18}eV$\\
+$\Downarrow$\\
+$E = 9.38\times10^8eV$\\
+$\Downarrow$\\
+$E = 938MeV$\\
+\end{center}
+Da ser vi at:\\
+\begin{center}
+$\frac{E_k}{E}\times100 = 5.11\%$\\
+\end{center}
+Som forteller oss at dette trolig ikke er en veldig god tilnærming.\\
+Eventuelt kan vi gjøre om $E_k$ til en hastighet og sammelikne med lysfarten.\\
+Når vi gjør det får vi at hastigheten når nesten 32\% av lyshastigheten.\\
+Da er det på tide å ta hensyn til relativitet.\\
+
+e{)} Her skal vi bestemme oss for en spenning som er sannsynlig å ha mellom D-ene i syklotronen, og deretter beregne hvor mange runder et proton må ta rundt før det forlater syklotronen.\\
+Vi får oppgitt at syklotronen har radius $r = 1m$ og $B = 1T$\\
+Hvis vi sier at  N = antall runder rundt syklotronen ender vi opp med å løse følgende ligning:\\
+\\
+\begin{center}
+$2NqV = \frac{1}{2}\frac{q^{2}B^{2}r^{2}}{m}$\\
+$\Downarrow$\\
+$N = \frac{qB^{2}r^{2}}{4mV}$\\
+$\Downarrow$\\
+$N = \frac{q}{V4m}$\\
+$\Downarrow$\\
+$N = \frac{1}{4}\frac{q_{p}}{Vm_{p}}$
+\end{center}
+Setter inn tall for ladning og masse til et proton:
+\begin{center}
+$N = \frac{1.6\times 10^{-19}}{4\times1.67\times10^{-27}}$\\
+$\Downarrow$\\
+$N \approx \frac{1}{V}2.4\times10^{7}$\\
+\end{center}
+Har lest litt på internett om syklotroner og det er visstnok mulig å komme ganske høyt opp i spenning (94kV faktisk).\\
+Jeg har valgt å være litt mer forsiktig og bruker en spenning $V = 12000 V$.\\
+Da får vi:
+\begin{center}
+$N = \frac{2.4\times10^{7}}{1.2\times10^{4}}$\\
+$\Downarrow$\\
+$N = 2000 $
+\end{center}
+Vi får så beskjed om å bestemme frekvensen til E-feltet.\\
+Har at:
+\begin{center}
+$\omega = 2\pi f$\\
+$\Downarrow$\\
+$f = \frac{\omega}{2\pi}$\\
+\end{center}
+Vi har så fra oppgave2 at:\\
+\begin{center}
+$\omega = \frac{qB}{m}$
+\end{center}
+Hvis vi nå setter inn for $\omega$ i formelen for frekvens får vi:\\
+\begin{center}
+$f = \frac{qB}{2m\pi}$\\
+$\Downarrow$\\
+$f = \frac{1.6\times10^{-19}}{2\pi 1.67\times10^{-27}} \frac{CT}{kg}$\\
+$\Downarrow$\\
+$f = \frac{1.6\times10^{-19}}{2\pi 1.67\times10^{-27}} \frac{A s kg}{s^2 A kg}$\\
+$\Downarrow$\\
+$f = \frac{1.6\times10^{8}}{2\pi 1.67} \frac{}{s}$\\
+$\Downarrow$\\
+$f = 15.2484 MHz$
+\end{center}
+PS: Jeg har jobbet mye sammen med Peter Hanken, Kristian Olsen, Ask Markestad og Sean Miller på denne obligen.\\
+Antar det blir en del likheter mellom oss
+\end{document}
